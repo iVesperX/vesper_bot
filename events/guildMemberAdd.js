@@ -33,37 +33,40 @@ exports.run = ((client, member) => {
   const verified_ID = '421819247988310026';
   const spectators_ID = '319613891208282112';
 
-  const add_verified_role = (player => {
+  const add_required_role = (data => {
     const verified = member.guild.id == servers[1] ? verified_ID : member.guild.roles.find('name', 'Account Verified');
     const spectators = member.guild.id == servers[1] ? spectators_ID : member.guild.roles.find('name', 'Spectators');
 
     if (!verified || !spectators) return console.log(`Insufficient roles to autorole in ${member.guild.name} (${member.guild.id})`);
 
-    member.setNickname(player, 'PL Registration').catch(err => {
-      console.log(`Unable to set nickname ${player} to ${message.author.tag}`);
-    });
+    if (!data) {
+      // not in database
+      member.addRole(spectators).catch(err => {
+        console.log(`Unable to add "Spectators" role to ${message.author.tag}`)
+      });
+    } else {
+      // in database
+      member.setNickname(data.name, 'PL Registration').catch(err => {
+        console.log(`Unable to set nickname ${data.name} to ${message.author.tag}`);
+      });
+  
+      member.addRole(verified).catch(err => {
+        console.log(`Unable to add "Account Verified" role to ${message.author.tag}`)
+      });
+  
+      member.removeRole(spectators).catch(err => {
+        console.log(err);
+        console.log(`Unable to remove "Spectators" role from ${message.author.tag}`)
+      });
 
-    member.addRole(verified).catch(err => {
-      console.log(`Unable to add "Account Verified" role to ${message.author.tag}`)
-    });
-
-    member.removeRole(spectators).catch(err => {
-      console.log(err);
-      console.log(`Unable to remove "Spectators" role from ${message.author.tag}`)
-    });
+      member.guild.channels.get('422149991482785812').send(`<@${member.user.id}> has joined and been given the <@&${verified_ID}> role.`);
+      member.user.send(`Since you are already registered as ${data.name}, you have been given the Account Verified role in ${member.guild.name}!`);
+    }
   });
 
-  setTimeout(function() {
-    sqlite.open(`./${config.db}`).then(() => {
-      sqlite.get(`SELECT * FROM players where discord_id=\"${member.user.id}\"`).then(row => {
-        if (row) {
-          // already in database
-          add_verified_role(row.name);
-          member.guild.channels.get('422149991482785812').send(`<@${member.user.id}> has joined and been given the <@&${verified_ID}> role.`);
-          member.user.send(`Since you are already registered as ${row.name}, you have been given the Account Verified role in ${member.guild.name}!`);
-        }
-      });
+  sqlite.open(`./${config.db}`).then(() => {
+    sqlite.get(`SELECT * FROM players where discord_id=\"${member.user.id}\"`).then(row => {
+      add_required_role(row);
     });
-  }, 3000);
-
+  });
 });
