@@ -25,7 +25,7 @@ sqlite.open(config.db).then(() => {
   });
 
   // Logs in after initial database connection
-  client.login(config.token);
+  client.login(process.env.token);
 }).catch(err => {
   console.log(err);
 });
