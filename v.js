@@ -16,17 +16,13 @@ fs.readdir("./events/", (err, files) => {
 });
 
 sqlite.open(config.db).then(() => {
-  // sqlite.run('DROP TABLE IF EXISTS teams').then(() => {
-  // sqlite.run('DROP TABLE IF EXISTS players').then(() => {
-      sqlite.run('CREATE TABLE IF NOT EXISTS teams (id INTEGER PRIMARY KEY NOT NULL, team_name TEXT DEFAULT \'\', manager TEXT DEFAULT \'\', manager_id TEXT, players TEXT DEFAULT NULL)').catch(err => {
-        return console.log(err);
-      });
-      
-      sqlite.run('CREATE TABLE IF NOT EXISTS players (id INTEGER PRIMARY KEY NOT NULL, name TEXT DEFAULT \'\', team TEXT DEFAULT \'-\', discord_id TEXT, waived_from TEXT DEFAULT \'-\')').catch(err => {
-        return console.log(err);
-      });
-  // });
-  // });
+  sqlite.run('CREATE TABLE IF NOT EXISTS teams (id INTEGER PRIMARY KEY NOT NULL, team_name TEXT DEFAULT \'\', manager TEXT DEFAULT \'\', manager_id TEXT, players TEXT DEFAULT NULL)').catch(err => {
+    return console.log(err);
+  });
+  
+  sqlite.run('CREATE TABLE IF NOT EXISTS players (id INTEGER PRIMARY KEY NOT NULL, name TEXT DEFAULT \'\', team TEXT DEFAULT \'-\', discord_id TEXT, waived_from TEXT DEFAULT \'-\')').catch(err => {
+    return console.log(err);
+  });
 
   // Logs in after initial database connection
   client.login(config.token);
