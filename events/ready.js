@@ -1,3 +1,5 @@
+const config = require('../config.json');
+
 exports.run = (client => {
   console.log('Vesper locked and loaded.');
 
