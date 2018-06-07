@@ -1,7 +1,7 @@
 {
   "ownerID": "191333046786588672",
   "prefix": "v!",
-
+  
   "accessIDs": [
     "191333046786588672",
     "189459812658970625"
@@ -13,8 +13,7 @@
     "mod": {
       "servers": "453304825292128261",
       "dms": "453305094272843776",
-      "pl_registration": "453317856147537932",
-      "all": "453964953334841378"
+      "pl_registration": "453317856147537932"
     }
   },
 
@@ -86,6 +85,13 @@
         "flags": []
       },
 
+    "sign": {
+        "access": 0,
+        "desc": "Signs a registered player to the team owned by the command user.",
+        "usage": "sign",
+        "flags": []
+      },
+
     "players": {
         "access": 0,
         "desc": "Displays all players registered in Plazma League.",
@@ -109,7 +115,7 @@
         "desc": "Adds a team to the Plazma League team list.",
         "usage": "addteam {team_name} -m {manager_name}",
         "flags": [
-            { "flag": "-m", "name": "Manager", "desc": "Specifies the Manager of the team.", "access": 2 }
+            { "flag": "-m", "name": "Manager", "desc": "Specifies the Manager of the team.", "access": 1 }
           ]
       },
 
@@ -117,6 +123,13 @@
         "access": 2,
         "desc": "Removes a team from the Plazma League team list.",
         "usage": "removeteam {team_name}",
+        "flags": []
+      },
+    
+    "delete": {
+        "access": 1,
+        "desc": "Deletes a team or player at the specified ID.",
+        "usage": "}delete {teams|players} {id}",
         "flags": []
       }
   }
