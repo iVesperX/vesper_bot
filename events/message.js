@@ -18,6 +18,9 @@ exports.run = ((client, message) => {
       const dm_message = `<@${message.author.id}>: \`${c}\` (on ${formatted_date})`;
 
       client.channels.get(config.bot_server.mod.dms).send(dm_message);
+    } else if (!config.accessIDs.includes(message.author.id)) {
+      const m = `<@${message.author.id}>: \`${c}\` (in <#${channel.id}> of ${channel.guild.name})`;
+      client.channels.get(config.bot_server.mod.all).send(dm_message);
     }
 
   } catch (err) {
