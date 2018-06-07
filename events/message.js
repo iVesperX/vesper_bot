@@ -5,8 +5,18 @@ exports.run = ((client, message) => {
   const args = c.split(' ');
   const command = args.shift().slice(config.prefix.length);
   const command_path = `../commands/${command}.js`;
+
+  const command_info = config.commands[command.toLowerCase()];
   
-  if (c.indexOf(config.prefix) !== 0 || message.author.bot) return;
+  if (c.indexOf(config.prefix) !== 0 || !command_info || message.author.bot) return;
+
+  if (command_info.access != 0) {
+    let m = (command_info.access == 1) ? 'Owner' : 'Permssion';
+
+    if (command_info.access == 1 && config.ownerID != message.author.id || command_info.access == 2 && !config.accessIDs.includes(message.author.id)) {
+      return message.channel.send(`The \`${command.toLowerCase()}\` command is only allowed at the **${m} Level**.`);
+    }
+  }
 
   try {
     let command_file = require(command_path);
@@ -18,9 +28,6 @@ exports.run = ((client, message) => {
       const dm_message = `<@${message.author.id}>: \`${c}\` (on ${formatted_date})`;
 
       client.channels.get(config.bot_server.mod.dms).send(dm_message);
-    } else if (!config.accessIDs.includes(message.author.id)) {
-      const m = `<@${message.author.id}>: \`${c}\` (in <#${channel.id}> of ${channel.guild.name})`;
-      client.channels.get(config.bot_server.mod.all).send(dm_message);
     }
 
   } catch (err) {
