@@ -5,6 +5,8 @@ const config = require('./config.json');
 const fs = require('fs');
 const sqlite = require('sqlite');
 
+const token = process.env.token;
+
 fs.readdir("./events/", (err, files) => {
   if (err) return console.error(err);
 
@@ -25,7 +27,7 @@ sqlite.open(config.db).then(() => {
   });
 
   // Logs in after initial database connection
-  client.login(process.env.token);
+  client.login(token);
 }).catch(err => {
   console.log(err);
 });
