@@ -5,7 +5,7 @@ const config = require('./config.json');
 const fs = require('fs');
 const sqlite = require('sqlite');
 
-const token = process.env.token;
+const token = "MzIwMTg5MjAxNjA3OTUwMzQ2.DcRDTA.PgAWje5VADhduWo58t1kKTbBHgQ";
 
 fs.readdir("./events/", (err, files) => {
   if (err) return console.error(err);
