@@ -97,7 +97,7 @@
     "teams": {
         "access": 0,
         "desc": "Displays all teams registered in Plazma League.",
-        "usage": "",
+        "usage": "teams|teams -r",
         "flags": [
             { "flag": "-r", "name": "Reset", "desc": "Clears all teams currently used in Plazma League.", "access": 1 }
           ]
@@ -108,7 +108,7 @@
         "desc": "Adds a team to the Plazma League team list.",
         "usage": "addteam {team_name} -m {manager_name}",
         "flags": [
-            { "flag": "-m", "name": "Manager", "desc": "Specifies the Manager of the team.", "access": 1 }
+            { "flag": "-m", "name": "Manager", "desc": "Specifies the Manager of the team.", "access": 2 }
           ]
       },
 
