@@ -18,8 +18,10 @@ exports.run = ((client, message, args) => {
   sqlite.open(config.db).then(() => {
     sqlite.get(`SELECT * FROM teams WHERE manager_id=\"${message.author.id}\"`).then(row => {
       if (!row) {
+        // not a manager
         return message.reply('you are not a manager of a team!');
       } else {
+        // a real manager
         sqlite.get(`SELECT * FROM players WHERE name=\"${player}\"`).then(player_row => {
           if (!player_row) {
             return message.channel.send(`\`${player}\` is not a registered player in PL and is unable to be signed.\n\nThat player must use the command \`v!register [PB2 account name]\` and then you will be able to sign them.`);
@@ -31,14 +33,13 @@ exports.run = ((client, message, args) => {
 
           console.log(JSON.stringify(players));
   
-          sqlite.run(`UPDATE teams SET players=\"${JSON.stringify(players)}\" WHERE manager_id=\"${message.author.id}\"`).then(() => {
+          sqlite.run(`UPDATE teams SET players=\'${JSON.stringify(players)}\' WHERE manager_id=\"${message.author.id}\"`).then(() => {
             sqlite.run(`UPDATE players SET team=\"${row.team_name}\" WHERE name=\"${player}\"`).then(() => {
               console.log(`${player} successfully signed by ${row.team_name}`);
+              message.channel.send(`\`${player}\` has successfully been signed to Team ${row.team_name}.`);
             }).catch(err => {
               console.log('error in teams update');
             });
-
-            message.channel.send(`\`${player}\` has successfully been signed to Team ${row.team_name}.`);
           }).catch(err => {
             console.log('error in players update');
           });

@@ -12,7 +12,7 @@ exports.run = ((client, message, args) => {
   const pl_icon = pl_server.iconURL;
   const pl_invite = '';
 
-  const role_color = (message.guild && !!message.guild.me.displayColor) ? message.guild.me.displayColor : 12172222;
+  const role_color = !message.guild.me.displayColor ? 12172222 : message.guild.me.displayColor;
 
   sqlite.open(`./${config.db}`).then(() => {
     sqlite.get('SELECT * FROM teams').then(row => {
@@ -61,7 +61,7 @@ exports.run = ((client, message, args) => {
           let players = /^\[.*\]$/.test(row.players) ? JSON.parse(row.players) : 'N/A';
 
           if (typeof players == 'object') {
-            players = `${players.join(',')}`;
+            players = players.join(', ');
           }
 
           teams.addField(`__${row.team_name}__`, `Manager: <@${row.manager_id}>\nPlayers: ${players}`);
