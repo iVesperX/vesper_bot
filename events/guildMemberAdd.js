@@ -33,7 +33,7 @@ exports.run = ((client, member) => {
     const data = db.getData('/');
     const users = data.verified;
 
-    const verified_account = users[message.author.id] ? users[message.author.id][0] : null;
+    const verified_account = users[member.user.id] ? users[member.user.id][0] : null;
     
     if (!verified_account) return;
 
