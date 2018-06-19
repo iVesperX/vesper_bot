@@ -61,7 +61,7 @@ exports.run = ((client, message, args) => {
         if (config.bot_server) {
           const today = new Date();
           const formatted_date = today.toLocaleString('en-US', config.date_options) + ', ' + today.toLocaleTimeString();
-          const reg_message = `${message.author.tag} (<@${message.author.id}>) has verified as \`${account.login}\` (on ${formatted_date})`;
+          const ver_message = `${message.author.tag} (<@${message.author.id}>) has verified as \`${account.login}\` (on ${formatted_date})`;
 
           client.guilds.get(config.bot_server.id).channels.get(config.bot_server.mod.pl_verification).send(ver_message);
         }
