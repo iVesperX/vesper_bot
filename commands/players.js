@@ -23,8 +23,9 @@ exports.run = ((client, message, args) => {
   db.reload();
   const data = db.getData('/');
   const players = data.players;
+  const users = data.users;
 
-  if (players.length <= 1) return message.channel.send('There are currently no participants in PL.');
+  if (players.length <= 1 && users.length <= 1) return message.channel.send('There are currently no participants in PL.');
 
   if (reset_flag == args[0]) {
     if (!config.accessIDs.includes(message.author.id)) return;
