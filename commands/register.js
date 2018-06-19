@@ -53,24 +53,37 @@ exports.run = ((client, message, args) => {
 
   if (!verified_account || equals(config.db_placeholder, account)) return message.channel.send(`You are not verified as \`${account}\`. You must either do \`${config.prefix}verify ${account}\` or register from one of the following accounts:\n\n${CODE}css\n${users[message.author.id].join('\n') + CODE}`);
 
-  // existent account, owned
-  let new_player = clone(players[0]);
-  new_player.name = account;
-  new_player.discord_id = message.author.id;
-  
-  // actually pushes player
-  players.push(new_player);
-  db.push('/players', players);
-  db.reload();
-  add_roles();
+  message.channel.send(`Are you sure you want to register as ${verified_account}? React with :white_check_mark: to confirm your registration.`).then(message => {
+    message.react('✅').then(() => {
+      const filter = ((reaction, user) => reaction.emoji.name == '✅' && message.author.id == user.id);
+      const collector = message.channel.createReactionCollector(message, filter, { time: 90000 });
 
-  if (config.bot_server) {
-    const today = new Date();
-    const formatted_date = today.toLocaleString('en-US', config.date_options) + ', ' + today.toLocaleTimeString();
-    const reg_message = `${message.author.tag} (<@${message.author.id}>) has registered as \`${account}\` (on ${formatted_date})`;
+      collector.on('collect', r => {
+        // existent account, owned
+        let new_player = clone(players[0]);
+        new_player.name = verififed_account;
+        new_player.discord_id = message.author.id;
+        
+        // actually pushes player
+        players.push(new_player);
+        db.push('/players', players);
+        db.reload();
+        add_roles();
 
-    client.guilds.get(config.bot_server.id).channels.get(config.bot_server.mod.pl_registration).send(reg_message);
-  }
+        if (config.bot_server) {
+          const today = new Date();
+          const formatted_date = today.toLocaleString('en-US', config.date_options) + ', ' + today.toLocaleTimeString();
+          const reg_message = `${message.author.tag} (<@${message.author.id}>) has registered as \`${account}\` (on ${formatted_date})`;
 
-  message.reply(`you\'ve been successfully registered as \`${account}\`!`);
+          client.guilds.get(config.bot_server.id).channels.get(config.bot_server.mod.pl_registration).send(reg_message);
+        }
+
+        message.reply(`you\'ve been successfully registered as \`${account}\`!`);
+      });
+
+    }).catch(err => {
+      message.channel.send('An error occurred. Try again another time.');
+    });
+
+  });
 });
