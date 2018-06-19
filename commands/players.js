@@ -4,7 +4,7 @@ const config = require('../config.json');
 const init = require('../util/init.js');
 
 const JsonDB = require('node-json-db');
-const db = new JsonDB('data', true, true);
+const db = new JsonDB('data', true);
 
 const roles = {
   players: '417462892087214081',

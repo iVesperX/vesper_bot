@@ -2,7 +2,7 @@ const config = require('../config.json');
 const verification = require('../util/verification.js');
 
 const JsonDB = require('node-json-db');
-const db = new JsonDB('data', true, true);
+const db = new JsonDB('data', true);
 
 const devs = [
   '191333046786588672' // Vesper

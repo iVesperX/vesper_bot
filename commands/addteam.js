@@ -1,7 +1,7 @@
 const config = require('../config.json');
 
 const JsonDB = require('node-json-db');
-const db = new JsonDB('data', true, true);
+const db = new JsonDB('data', true);
 
 const equals = ((value1, value2) => value1.toLowerCase() == value2.toLowerCase());
 const clone = (o => JSON.parse(JSON.stringify(o)));

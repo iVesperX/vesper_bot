@@ -3,7 +3,7 @@ const config = require('../config.json');
 const verification = require('../util/verification.js');
 
 const JsonDB = require('node-json-db');
-const db = new JsonDB('data', true, true);
+const db = new JsonDB('data', true);
 
 const pb2_api = 'http://plazmaburst2.com/extract.php?login=';
 

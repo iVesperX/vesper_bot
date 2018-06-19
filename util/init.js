@@ -1,5 +1,5 @@
 const JsonDB = require('node-json-db');
-const db = new JsonDB('data', true, true);
+const db = new JsonDB('data', true);
 const data = db.getData('/');
 
 const clone = (o => JSON.parse(JSON.stringify(o)));

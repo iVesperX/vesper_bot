@@ -1,7 +1,7 @@
 const config = require('../config.json');
 
 const JsonDB = require('node-json-db');
-const db = new JsonDB('data', true, true);
+const db = new JsonDB('data', true);
 const data = db.getData('/');
 
 const init = require('../util/init.js');
@@ -14,7 +14,7 @@ exports.run = (client => {
   let setStatus = setInterval(function () {
     // Game Presence Interval
     let games = [
-      { value: `in only ${client.guilds.size} servers...`, type: 'PLAYING', help: false },
+      { value: `in only ${client.guilds.size} guilds...`, type: 'PLAYING', help: false },
       { value: `with ${client.users.get(config.ownerID).tag}`, type: 'PLAYING', help: true },
 
       { value: `${client.users.size} users`, type: 'WATCHING', help: true },

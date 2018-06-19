@@ -4,7 +4,7 @@ const config = require('../config.json');
 const reactor = require('../util/reactor.js');
 
 const JsonDB = require('node-json-db');
-const db = new JsonDB('data', true, true);
+const db = new JsonDB('data', true);
 
 const CODE = '```';
 const max_text_length = 2000;
