@@ -20,8 +20,6 @@
 
   "date_options": { "weekday": "long", "year": "numeric", "month": "long", "day": "numeric" },
 
-  "pl_reset_pw": "5P4RK3N",
-
   "db": "sql.data",
   "json_db": "data",
   "db_placeholder": "-",
