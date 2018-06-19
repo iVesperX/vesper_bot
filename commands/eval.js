@@ -8,7 +8,7 @@ exports.run = ((client, message, args) => {
 
   const send_param = (args[0] == '-s');
   const task = send_param ? args.slice(1).join(' ') : args.join(' ');
-  console.log(task);
+  // console.log(task);
 
   if (send_param) {
     try {
