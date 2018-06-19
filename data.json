@@ -9,38 +9,6 @@
             "players": []
         }
     ],
-    "players": [
-        {
-            "name": "Template",
-            "matches_left": 10,
-            "team": "-",
-            "discord_id": -1,
-            "waived_from": "-",
-            "is_manager": false,
-            "is_former_manager": false
-        },
-        {
-            "name": "ChemicalX",
-            "matches_left": 10,
-            "team": "-",
-            "discord_id": "191333046786588672",
-            "waived_from": "-",
-            "is_manager": false,
-            "is_former_manager": false
-        }
-    ],
-    "verified": {
-        "0": [
-            "N/A"
-        ],
-        "191333046786588672": [
-            "ChemicalX"
-        ],
-        "282024282698153985": [
-            "robocraft player"
-        ],
-        "132673618244141056": [
-            "Euphoric Stargazer"
-        ]
-    }
+    "players": [{"name":"Template","matches_left":10,"team":"-","discord_id":-1,"waived_from":"-","is_manager":false,"is_former_manager":false},{"name":"ChemicalX","matches_left":10,"team":"-","discord_id":"191333046786588672","waived_from":"-","is_manager":false,"is_former_manager":false},{"name":"Synergic X","matches_left":10,"team":"-","discord_id":"193932949127823361","waived_from":"-","is_manager":false,"is_former_manager":false},{"name":"lexwalker","matches_left":10,"team":"-","discord_id":"256975007438209028","waived_from":"-","is_manager":false,"is_former_manager":false},{"name":"Slashdown","matches_left":10,"team":"-","discord_id":"351136710870171649","waived_from":"-","is_manager":false,"is_former_manager":false},{"name":"Resurrectionn","matches_left":10,"team":"-","discord_id":"306524224711819265","waived_from":"-","is_manager":false,"is_former_manager":false}],
+    "verified": {"0":["N/A"],"191333046786588672":["ChemicalX"],"282024282698153985":["robocraft player"],"132673618244141056":["Euphoric Stargazer"],"193932949127823361":["Synergic X"],"256975007438209028":["lexwalker"],"351136710870171649":["Slashdown"],"306524224711819265":["Resurrectionn"],"284828068491558912":["iXcellence"],"145604550835961856":["Walian11"]}
 }
