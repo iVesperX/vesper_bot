@@ -37,7 +37,7 @@ exports.run = ((client, member) => {
     
     if (!verified_account) return;
 
-    const add_roles = (() => verification.verify(client, member.user, verified_account));
+    verification.verify(client, member.user, verified_account);
     const account_verified = member.guild.roles.find('name', 'Account Verified');
 
     member.guild.channels.get('422149991482785812').send(`<@${member.user.id}> has joined and been given the <@&${account_verified.id}> role.`);

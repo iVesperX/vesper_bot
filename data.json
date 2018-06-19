@@ -1,0 +1,28 @@
+{
+    "init": true,
+    "pl_invite": "https://discordapp.com/invite/kqxZcGa",
+    "teams": [
+        {
+            "name": "Template",
+            "manager": "",
+            "manager_id": -1,
+            "players": []
+        }
+    ],
+    "players": [
+        {
+            "name": "Template",
+            "matches_left": 10,
+            "team": "-",
+            "discord_id": -1,
+            "waived_from": "-",
+            "is_manager": false,
+            "is_former_manager": false
+        }
+    ],
+    "verified": {
+        "0": [
+            "N/A"
+        ]
+    }
+}

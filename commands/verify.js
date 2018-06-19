@@ -58,6 +58,14 @@ exports.run = ((client, message, args) => {
         db.reload();
         add_roles();
 
+        if (config.bot_server) {
+          const today = new Date();
+          const formatted_date = today.toLocaleString('en-US', config.date_options) + ', ' + today.toLocaleTimeString();
+          const reg_message = `${message.author.tag} (<@${message.author.id}>) has verified as \`${account.login}\` (on ${formatted_date})`;
+
+          client.guilds.get(config.bot_server.id).channels.get(config.bot_server.mod.verification).send(ver_message);
+        }
+
         message.reply(`you\'ve been successfully verified as \`${account.login}\`!`);
       }
     });

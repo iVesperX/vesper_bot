@@ -5,12 +5,12 @@ exports.run = ((client, message) => {
   const args = c.split(' ');
   const command = args.shift().slice(config.prefix.length);
   const command_path = `../commands/${command}.js`;
+  
+  if (c.indexOf(config.prefix) !== 0 || message.author.bot) return;
 
   const command_info = config.commands[command.toLowerCase()];
   
   if (command_info) {
-    if (c.indexOf(config.prefix) !== 0 || message.author.bot) return;
-
     if (command_info.access != 0) {
       let m = (command_info.access == 1) ? 'Owner' : 'Permssion';
   
