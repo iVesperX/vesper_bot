@@ -17,7 +17,7 @@ exports.run = ((client, message, args) => {
   
   const pl_server_member = client.guilds.get('310995545588105217').members.get(message.author.id);
 
-  if (!pl_server_member) return message.reply(`You are currently not in Plazma League Discord! You may only register if you are verified in the chat. PL Discord chat is public and open to everyone.\n\nInvitation link: ${config.pl_invite ? config.pl_invite : '-'}`)
+  if (!pl_server_member) return message.reply(`You are currently not in Plazma League Discord! You may only register if you are verified in the chat. PL Discord chat is public and open to everyone.\n\nInvitation link: ${data.pl_invite ? data.pl_invite : '-'}`)
 
   if (!args.length) {
     return message.channel.send('Specify a PB2 account to register for PL.\n\n__Example__: ' + format);
