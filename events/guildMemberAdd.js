@@ -28,7 +28,7 @@ exports.run = ((client, member) => {
   }
 
   // PL Server
-  if (member.guild.id == servers[1]) {
+  if (member.guild.id == servers[1] || member.guild.id == servers[2]) {
     db.reload();
     const data = db.getData('/');
     const users = data.verified;

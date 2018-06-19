@@ -19,6 +19,8 @@ exports.setRoles = ((client, user, name, registration) => {
   const discord_tag = user.tag;
 
   const pl_server_member = pl_server.members.get(user.id);
+  console.log(`pl server member : ${pl_server_member}`);
+  console.log(`client in pl : ${client_in_PL.user.tag}`);
 
   const role_to_add = !registration ? verified_ID : registered_ID;
   const role_to_remove = !registration ? spectators_ID : null;
