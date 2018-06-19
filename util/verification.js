@@ -17,7 +17,8 @@ exports.setRoles = ((client, user, name, registration) => {
   const spectators_ID = '319613891208282112';
   
   const discord_tag = user.tag;
-  console.log(pl_server);
+  console.log(pl_server.members);
+  console.log(user.id);
 
   const pl_server_member = pl_server.members.get(user.id);
   console.log(`user : ${user.id}`);
