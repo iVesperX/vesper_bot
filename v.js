@@ -3,9 +3,13 @@ const client = new Discord.Client();
 
 const config = require('./config.json');
 const fs = require('fs');
-const sqlite = require('sqlite');
 
-const token = "MzIwMTg5MjAxNjA3OTUwMzQ2.DcRDTA.PgAWje5VADhduWo58t1kKTbBHgQ";
+const JsonDB = require('node-json-db');
+const db = new JsonDB('data', true, true);
+const data = db.getData('/');
+
+const init = require('./util/init.js');
+const t = process.env.token;
 
 fs.readdir("./events/", (err, files) => {
   if (err) return console.error(err);
@@ -17,17 +21,9 @@ fs.readdir("./events/", (err, files) => {
   }
 });
 
-sqlite.open(config.db).then(() => {
-  sqlite.run('CREATE TABLE IF NOT EXISTS teams (id INTEGER PRIMARY KEY NOT NULL, team_name TEXT DEFAULT \'\', manager TEXT DEFAULT \'\', manager_id TEXT, players TEXT DEFAULT NULL)').catch(err => {
-    return console.log(err);
-  });
-  
-  sqlite.run('CREATE TABLE IF NOT EXISTS players (id INTEGER PRIMARY KEY NOT NULL, name TEXT DEFAULT \'\', team TEXT DEFAULT \'-\', discord_id TEXT, waived_from TEXT DEFAULT \'-\')').catch(err => {
-    return console.log(err);
-  });
 
-  // Logs in after initial database connection
-  client.login(token);
-}).catch(err => {
-  console.log(err);
+if (data.init !== true) init.initialize.all();
+
+client.login(t).then(() => {
+  if (data.init !== true) init.initialize.all(client);
 });

@@ -8,14 +8,18 @@ exports.run = ((client, message) => {
 
   const command_info = config.commands[command.toLowerCase()];
   
-  if (c.indexOf(config.prefix) !== 0 || !command_info || message.author.bot) return;
+  if (command_info) {
+    if (c.indexOf(config.prefix) !== 0 || message.author.bot) return;
 
-  if (command_info.access != 0) {
-    let m = (command_info.access == 1) ? 'Owner' : 'Permssion';
-
-    if (command_info.access == 1 && config.ownerID != message.author.id || command_info.access == 2 && !config.accessIDs.includes(message.author.id)) {
-      return message.channel.send(`The \`${command.toLowerCase()}\` command is only allowed at the **${m} Level**.`);
+    if (command_info.access != 0) {
+      let m = (command_info.access == 1) ? 'Owner' : 'Permssion';
+  
+      if (command_info.access == 1 && config.ownerID != message.author.id || command_info.access == 2 && !config.accessIDs.includes(message.author.id)) {
+        return message.channel.send(`The \`${command.toLowerCase()}\` command is only allowed at the **${m} Level**.`);
+      }
     }
+  } else {
+    if (message.author.id != config.ownerID) return;
   }
 
   try {
@@ -27,7 +31,9 @@ exports.run = ((client, message) => {
       const formatted_date = today.toLocaleString('en-US', config.date_options) + ', ' + today.toLocaleTimeString();
       const dm_message = `<@${message.author.id}>: \`${c}\` (on ${formatted_date})`;
 
-      client.channels.get(config.bot_server.mod.dms).send(dm_message);
+      if (config.bot_server) {
+        client.channels.get(config.bot_server.mod.dms).send(dm_message);
+      }
     }
 
   } catch (err) {

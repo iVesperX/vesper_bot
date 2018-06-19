@@ -1,90 +1,67 @@
-const sqlite = require('sqlite');
 const request = require('request');
-
 const config = require('../config.json');
+const verification = require('../util/verification.js');
 
-const pb2_api = 'http://plazmaburst2.com/extract.php?login=';
+const JsonDB = require('node-json-db');
+const db = new JsonDB('data', true, true);
+
+const CODE = '```';
 
 const equals = ((value1, value2) => value1.toLowerCase() == value2.toLowerCase());
+const clone = (o => JSON.parse(JSON.stringify(o)));
 
 exports.run = ((client, message, args) => {
-  const player = args.join(' ');
-  const format =  `\`${config.prefix}register {pb2_name}\``;
+  const account = args.join(' ');
+  const discord_tag = message.author.tag;
+  const format =  `\`${config.prefix}register {account_name}\``;
+  
+  const pl_server_member = client.guilds.get('310995545588105217').members.get(message.author.id);
 
-  const add_verified_role = (() => {
-    const pl_server_member = client.guilds.get('310995545588105217').members.get(message.author.id);
-
-    if (pl_server_member) {
-      pl_server_member.setNickname(player, 'PL Registration').then(() => {
-        pl_server_member.addRole('421819247988310026').then(() => {
-          pl_server_member.removeRole('319613891208282112').catch(err => {
-            console.log(err);
-            console.log(`Unable to remove Spectators role from ${message.author.tag}`)
-          });
-        }).catch(err => {
-          console.log(`Unable to add Account Verified role to ${message.author.tag}`)
-        }).catch(err => {
-          console.log(`Unable to set nickname ${player} to ${message.author.tag}`);
-        });
-      });
-    } else {
-      console.log(`${message.author.tag} registered, but not in Plazma League server.`)
-    }
-  });
+  if (!pl_server_member) return message.reply(`You are currently not in Plazma League Discord! You may only register if you are verified in the chat. PL Discord chat is public and open to everyone.\n\nInvitation link: ${config.pl_invite ? config.pl_invite : '-'}`)
 
   if (!args.length) {
-    return message.channel.send('Specify a PB2 account to sign up with. __Example__: ' + format);
+    return message.channel.send('Specify a PB2 account to register for PL.\n\n__Example__: ' + format);
   }
 
-  sqlite.open(`./${config.db}`).then(() => {
-    sqlite.get(`SELECT * FROM players where discord_id=\"${message.author.id}\"`).then(row => {
-      if (row && equals(row.name, player)) {        
-        // already in database
-        add_verified_role();
-        message.reply(`you are already registered under that account!`);
-      } else if (row && !equals(row.name, player)) {
-        // register under new account?
-      } else {
-        // not already in database
-        request.get(pb2_api + player, function(err, res, body) {
-          if (err) return console.log(err);
-      
-          if (res && res.statusCode == 200) {
-            const account = JSON.parse(body);
-      
-            if (account.Error) {
-              // non-existent account
-              return message.channel.send(`The account \`${player}\` is not a valid PB2 account. It may have been disabled or simply does not exist. Try registering another account.`);
-            } else if (account.icq != message.author.tag) {
-              // existent account, not owned
-              return message.channel.send(`Set your PB2 account\'s Discord profile field to \`${message.author.tag}\` to register with that account.`);
-            } else if (account.icq == message.author.tag) {
-              // existent account, owned
-              sqlite.run(`INSERT INTO players (name, discord_id) VALUES ($name, $discordid)`, {
-                $name: account.login,
-                $discordid: message.author.id
-              }).then(() => {
-                // Successful registration
-                add_verified_role();
-                message.reply(`you\'ve been successfully registered as \`${account.login}\`!`);
+  const add_roles = (() => verification.register(client, message.author, account));
+  
+  db.reload();
+  const players = db.getData('/players');
+  const users = db.getData('/verified');
 
-                const registration_string = `PB2 account [${account.login}] registered under Discord account [${message.author.tag}] (${message.author.id})`;
-                
-                client.guilds.get(config.bot_server.id)
-                    .channels.get(config.bot_server.mod.pl_registration)
-                    .send(registration_string.replace(/\[|\]/g, '`'));
-                
-                console.log(registration_string);                
-              }).catch(err => {
-                console.log(err);
-              });
-            }
-          }
-        });
-      }
+  // where the magic happens
+  if (!users[message.author.id]) return message.reply(`you have not verified yourself as any account!\n\nUse \`${config.prefix}verify {pb2_account}\` to verify an account to register with.`);
 
-    });
-  }).catch(err => {
-    console.log('Failed to access database.')
+  const registered_account_index = players.findIndex(p => {
+    return user = users[message.author.id].some(u => equals(p.name, u));
   });
+
+  const other_registered_account_index = players.findIndex(p => equals(p.name, account));
+  const verified_account = users[message.author.id].find(u => equals(u, account));
+
+  if (players[registered_account_index]) {
+    // already in database
+    console.log(`${message.author.tag} attempted to register as ${account}, but already registered as ${players[registered_account_index].name}.`);
+    return message.reply(`you are already registered as ${players[registered_account_index].name}! You may not register as another account.`);
+  }
+
+  if (players[other_registered_account_index] && !equals(config.db_placeholder, account)) {
+    console.log(`${message.author.tag} attempted to register as ${players[other_registered_account_index].name}'s account.`);
+    return message.channel.send(`Another user is already registered as \`${players[other_registered_account_index].name}\`. You may not register as that account.`);
+  }
+
+  if (!verified_account || equals(config.db_placeholder, account)) return message.channel.send(`You are not verified as \`${account}\`. You must either do \`${config.prefix}verify ${account}\` or register from one of the following accounts:\n\n${CODE}css\n${users[message.author.id].join('\n') + CODE}`);
+
+  // existent account, owned
+  let new_player = clone(players[0]);
+  new_player.name = account;
+  new_player.discord_id = message.author.id;
+  
+  // actually pushes player
+  players.push(new_player);
+  db.push('/players', players);
+  db.reload();
+  add_roles();
+
+  message.reply(`you\'ve been successfully registered as \`${account}\`!`);
 });

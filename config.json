@@ -22,6 +22,8 @@
   "pl_reset_pw": "5P4RK3N",
 
   "db": "sql.data",
+  "json_db": "data",
+  "db_placeholder": "-",
 
   "commands": {
     "default": {
@@ -78,9 +80,17 @@
       },
 
 
+    "verify": {
+        "access": 0,
+        "desc": "Verifies a user has a valid PB2 account for Plazma League. Accounts are checked to see if the Discord profile tag matches the user's Discord tag.",
+        "usage": "verify {account_name}",
+        "flags": []
+      },
+
+
     "register": {
         "access": 0,
-        "desc": "Registers a PB2 account for Plazma League. Accounts are checked to see if the Discord profile tag matches the user's Discord tag.",
+        "desc": "Registers a PB2 account to sign up for Plazma League. Only accounts verified may be used when signing up.\n\n**Once done, a user may not register as a different account.**",
         "usage": "register {account_name}",
         "flags": []
       },
@@ -88,7 +98,14 @@
     "sign": {
         "access": 0,
         "desc": "Signs a registered player to the team owned by the command user.",
-        "usage": "sign",
+        "usage": "sign {player_name}",
+        "flags": []
+      },
+
+    "waive": {
+        "access": 0,
+        "desc": "Waives a player from the team owned by the command user.",
+        "usage": "waive {player_name}",
         "flags": []
       },
 
@@ -97,7 +114,7 @@
         "desc": "Displays all players registered in Plazma League.",
         "usage": "players -r",
         "flags": [
-            { "flag": "-r", "name": "Reset", "desc": "Resets all players and teams.", "access": 1 }
+            { "flag": "-r", "name": "Reset", "desc": "Resets all players and teams.", "access": 2 }
           ]
       },
 
@@ -106,7 +123,7 @@
         "desc": "Displays all teams registered in Plazma League.",
         "usage": "teams|teams -r",
         "flags": [
-            { "flag": "-r", "name": "Reset", "desc": "Clears all teams currently used in Plazma League.", "access": 1 }
+            { "flag": "-r", "name": "Reset", "desc": "Clears all teams currently used in Plazma League.", "access": 2 }
           ]
       },
 
@@ -115,7 +132,7 @@
         "desc": "Adds a team to the Plazma League team list.",
         "usage": "addteam {team_name} -m {manager_name}",
         "flags": [
-            { "flag": "-m", "name": "Manager", "desc": "Specifies the Manager of the team.", "access": 1 }
+            { "flag": "-m", "name": "Manager", "desc": "Specifies the Manager of the team.", "access": 2 }
           ]
       },
 
@@ -123,13 +140,6 @@
         "access": 2,
         "desc": "Removes a team from the Plazma League team list.",
         "usage": "removeteam {team_name}",
-        "flags": []
-      },
-    
-    "delete": {
-        "access": 1,
-        "desc": "Deletes a team or player at the specified ID.",
-        "usage": "}delete {teams|players} {id}",
         "flags": []
       }
   }

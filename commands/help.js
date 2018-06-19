@@ -19,6 +19,7 @@ exports.run = ((client, message, args) => {
 
   if (command) {
     // help command for another
+
     if (!commands[command]) return message.reply(`the command \`${command}\` cound not be resolved.`)
 
     let name = config.prefix + command,
@@ -49,7 +50,7 @@ exports.run = ((client, message, args) => {
     const help_menu = new Discord.RichEmbed();
 
     help_menu.setAuthor(`${client.user.username} Bot Help Menu`)
-            .setDescription(`For information on a specific command, use ${config.prefix} help \`[command]\`.`)
+            .setDescription(`For information on a specific command, use ${config.prefix}help \`[command]\`.`)
             .setColor(role_color)
             .setThumbnail(client.user.avatarURL)
             .setFooter(client.user.tag, client.user.avatarURL)

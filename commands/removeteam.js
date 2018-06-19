@@ -1,29 +1,47 @@
-const sqlite = require('sqlite');
 const config = require('../config.json');
+
+const JsonDB = require('node-json-db');
+const db = new JsonDB('data', true, true);
+
+const equals = ((value1, value2) => value1.toLowerCase() == value2.toLowerCase());
+const clone = (o => JSON.parse(JSON.stringify(o)));
 
 exports.run = ((client, message, args) => {
   const team = args.join(' ');
   const format =  `\`${config.prefix}removeteam {name}\``;
 
-  if (message.author.id != config.ownerID) return;
+  if (!config.accessIDS.includes(message.author.id)) return;
 
   if (!args.length) {
     return message.channel.send('Choose a team to remove.')
   }
 
-  sqlite.open(`./${config.db}`).then(() => {
-    sqlite.get(`SELECT * FROM teams WHERE team_name = "${team}"`).then(row => {
-      if (row) {
-        sqlite.run(`DELETE FROM teams WHERE team_name = "${team}"`).then(() => {
-          message.channel.send(`${team} has been successfully removed from PL.`);
-        });
-      } else {
-        message.channel.send(`Team ${team} does not exist.`);
+  db.reload();
+  const data = db.getData('/');
+  const teams = data.teams;
+  const players = data.players;
+
+  const team_index = teams.findIndex(t => equals(t.name, team));
+
+  if (!teams[team_index] || equals(team, 'template')) return message.channel.send(`Team ${team} does not exist.`);
+
+  let real_team_name = teams[team_index].name;
+  teams.splice(team_index, 1);
+
+  players.map(p => {
+    if (equals(p.team, team)) {
+      p.team = '-';
+      if (p.is_manager == true) {
+        p.is_manager = false;
+        p.is_former_manager = true;
       }
-    }).catch(err => {
-      console.log(`Error occurred trying to find team. (${team})`)
-    });
-  }).catch(err => {
-    console.log('Could not access database.');
+    }
+    
+    return p;
   });
+
+  db.push('/teams', teams);
+  db.push('/players', players);
+
+  message.channel.send(`${real_team_name} has been successfully removed from PL.`);
 });
