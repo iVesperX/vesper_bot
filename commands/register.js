@@ -53,15 +53,13 @@ exports.run = ((client, message, args) => {
 
   if (!verified_account || equals(config.db_placeholder, account)) return message.channel.send(`You are not verified as \`${account}\`. You must either do \`${config.prefix}verify ${account}\` or register from one of the following accounts:\n\n${CODE}css\n${users[message.author.id].join('\n') + CODE}`);
 
-  message.channel.send(`Are you sure you want to register as ${verified_account}? React with :white_check_mark: to confirm your registration.`).then(message => {
-    message.react('✅').then(() => {
-      const filter = ((reaction, user) => reaction.emoji.name == '✅' && message.author.id == user.id);
-      const collector = message.createReactionCollector(message, filter, { time: 90000 });
-
-      collector.on('collect', r => {
+  message.channel.send(`Are you sure you want to register as ${verified_account}? React with :white_check_mark: to confirm your registration.\n\n*Expires in 10 seconds...*`).then(new_message => {
+    new_message.react('✅').then(() => {
+      const filter = ((reaction, user) => reaction.emoji.name === '✅' && message.author.id === user.id);
+      new_message.awaitReactions(filter, { max: 1, time: 10000 }).then(collected => {
         // existent account, owned
         let new_player = clone(players[0]);
-        new_player.name = verififed_account;
+        new_player.name = verified_account;
         new_player.discord_id = message.author.id;
         
         // actually pushes player

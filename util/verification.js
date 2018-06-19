@@ -40,6 +40,8 @@ exports.setRoles = ((client, user, name, registration) => {
       const actual_role = pl_server.roles.get(role_to_add);
       console.log(`Unable to add "${actual_role.name}" role to ${discord_tag}`);
     });
+
+    if (registration) return; // returns if registering
   
     pl_server_member.removeRole(role_to_remove).catch(err => {
       const actual_role = pl_server.roles.get(role_to_remove);

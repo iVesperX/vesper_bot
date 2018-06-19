@@ -18,6 +18,15 @@
             "waived_from": "-",
             "is_manager": false,
             "is_former_manager": false
+        },
+        {
+            "name": "ChemicalX",
+            "matches_left": 10,
+            "team": "-",
+            "discord_id": "191333046786588672",
+            "waived_from": "-",
+            "is_manager": false,
+            "is_former_manager": false
         }
     ],
     "verified": {
@@ -26,6 +35,12 @@
         ],
         "191333046786588672": [
             "ChemicalX"
+        ],
+        "282024282698153985": [
+            "robocraft player"
+        ],
+        "132673618244141056": [
+            "Euphoric Stargazer"
         ]
     }
 }
