@@ -21,7 +21,13 @@ exports.run = ((client, message, args) => {
           return user.send(`${CODE}json\n${JSON.stringify(parsed_data.teams) + CODE}`);
           break;
         case '-players':
-        return user.send(`${CODE}json\n${JSON.stringify(parsed_data.players) + CODE}`);
+          return user.send(`${CODE}json\n${JSON.stringify(parsed_data.players) + CODE}`);
+          break;
+        case '-verified':
+          return  user.send(`${CODE}json\n${JSON.stringify(parsed_data.verified) + CODE}`);
+          break;
+        default:
+          return user.send(`${CODE}json\n${data + CODE}`);
           break;
       }
     });
