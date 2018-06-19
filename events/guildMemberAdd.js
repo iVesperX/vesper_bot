@@ -11,7 +11,7 @@ const devs = [
 const servers = [
   '328650645793931267', // PB2 Official
   '310995545588105217', // PL Server
-  '362729317077221377', // Vesper Server
+  '439256178237898754', // Vesper Server
   '372490159649718274'  // Art Editors
 ];
 
