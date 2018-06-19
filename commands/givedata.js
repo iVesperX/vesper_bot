@@ -1,6 +1,8 @@
 const fs = require('fs');
 const config = require('../config.json');
 
+const reactor = require('../util/reactor.js');
+
 const JsonDB = require('node-json-db');
 const db = new JsonDB('data', true, true);
 
@@ -13,30 +15,38 @@ exports.run = ((client, message, args) => {
   const parse_and_send = (async (user, text) => {
     for (let i = 0; i < text.length; i += max_text_length) {
       let new_text = text.slice(i, i + max_text_length);
-
       await user.send(`${CODE}json\n${new_text + CODE}`);
     }
   });
 
+  const callback = () => {
+    reactor.success(message, 'Succesfully returned database information');
+  };
+
   fs.readFile('data.json', (err, data) => {
     client.fetchUser(config.ownerID).then(user => {
-      let parsed_data = JSON.parse(data);
+      let parsed_data = JSON.parse(data),
+          response = '';
       if (!args.length) {
-        return user.send(`${CODE}json\n${data + CODE}`);
+        response = `${CODE}json\n${data + CODE}`;
+        return user.send(response).then(callback);
       }
 
       switch (args[0]) {
         case '-teams':
-          return user.send(`${CODE}json\n${JSON.stringify(parsed_data.teams) + CODE}`);
+          response = `${CODE}json\n${JSON.stringify(parsed_data.teams) + CODE}`;
+          return user.send(response).then(callback);
           break;
         case '-players':
-          return user.send(`${CODE}json\n${JSON.stringify(parsed_data.players) + CODE}`);
+          response = `${CODE}json\n${JSON.stringify(parsed_data.players) + CODE}`;
+          return user.send(response).then(callback);
           break;
         case '-verified':
-          return  user.send(`${CODE}json\n${JSON.stringify(parsed_data.verified) + CODE}`);
+          response = `${CODE}json\n${JSON.stringify(parsed_data.verified) + CODE}`;
+          return  user.send(response).then(callback);
           break;
         default:
-          return user.send(`${CODE}json\n${data + CODE}`);
+          return user.send(`${CODE}json\n${data + CODE}`).then(callback);
           break;
       }
     });
