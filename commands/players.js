@@ -18,10 +18,12 @@ exports.run = ((client, message, args) => {
   const pl_server = client.guilds.get('310995545588105217');
   const pl_name = pl_server.name;
   const pl_icon = pl_server.iconURL;
-  const pl_invite = '';
+
+  const role_color = !message.guild.me.displayColor ? 12172222 : message.guild.me.displayColor;
 
   db.reload();
   const data = db.getData('/');
+  const inv = data.pl_invite;
   const players = data.players;
   const users = data.verified;
 
@@ -53,7 +55,7 @@ exports.run = ((client, message, args) => {
     if (!pl_server) return;
     const players_list = new Discord.RichEmbed();
     
-    players_list.setAuthor(pl_name, pl_icon, pl_invite)
+    players_list.setAuthor(pl_name, pl_icon, inv)
          .setColor(role_color)
          .setDescription('List of all players within PL.')
          .setThumbnail(pl_icon)
