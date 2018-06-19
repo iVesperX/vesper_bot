@@ -29,7 +29,8 @@ exports.run = ((client, message, args) => {
           response = '';
       if (!args.length) {
         response = `${CODE}json\n${data + CODE}`;
-        return user.send(response).then(callback);
+        return parse_and_send(user, response);
+        // return user.send(response).then(callback);
       }
 
       switch (args[0]) {

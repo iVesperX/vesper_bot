@@ -5,6 +5,7 @@ exports.run = ((client, message) => {
   const args = c.split(' ');
   const command = args.shift().slice(config.prefix.length);
   const command_path = `../commands/${command}.js`;
+  const maintenance = /⛔/i.test(client.user.username);
   
   if (c.indexOf(config.prefix) !== 0 || message.author.bot) return;
 
@@ -23,6 +24,7 @@ exports.run = ((client, message) => {
   }
 
   try {
+    if (maintenance) return message.channel.send('Bot is down currently for maintenance.');
     let command_file = require(command_path);
     command_file.run(client, message, args);
     
