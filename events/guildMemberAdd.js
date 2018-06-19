@@ -29,6 +29,10 @@ exports.run = ((client, member) => {
 
   // PL Server
   if (member.guild.id == servers[1]) {
+    db.reload();
+    const data = db.getData('/');
+    const users = data.verified;
+
     const verified_account = users[message.author.id] ? users[message.author.id][0] : null;
     
     if (!verified_account) return;
