@@ -14,7 +14,7 @@ exports.run = (client => {
   let setStatus = setInterval(function () {
     // Game Presence Interval
     let games = [
-      { value: `in ${client.guilds.size} different servers!`, type: 'PLAYING', help: false },
+      { value: `in just ${client.guilds.size} different servers!`, type: 'PLAYING', help: false },
       { value: `with ${client.users.get(config.ownerID).tag}`, type: 'PLAYING', help: true },
 
       { value: `${client.users.size} users`, type: 'WATCHING', help: true },
