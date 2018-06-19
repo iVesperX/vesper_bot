@@ -17,9 +17,10 @@ exports.setRoles = ((client, user, name, registration) => {
   const spectators_ID = '319613891208282112';
   
   const discord_tag = user.tag;
+  console.log(pl_server);
 
   const pl_server_member = pl_server.members.get(user.id);
-  console.log(`user : ${user.tag}`);
+  console.log(`user : ${user.id}`);
   console.log(`pl server member : ${pl_server_member}`);
 
   const role_to_add = !registration ? verified_ID : registered_ID;
@@ -27,7 +28,7 @@ exports.setRoles = ((client, user, name, registration) => {
   const reason = !registration ? 'Account Verification' : 'PL Registration';
   
 
-  if (!client_in_PL || !pl_server_member) return console.log('Someone\'s not in PL server!');
+  if (!pl_server_member) return console.log(discord_tag + ' isn\'t in PL server!');
   if (!client_in_PL.hasPermission(["MANAGE_NICKNAMES", "MANAGE_ROLES"])) return console.log('Insufficient permissions in Plazma League Server.');
 
   if (!pl_server_member) return console.log(`${discord_tag} registered, but not in Plazma League server.`);
