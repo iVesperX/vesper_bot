@@ -11,8 +11,28 @@ exports.run = (client => {
 
   if (data.init !== true) init.initialize.all(client);
 
-  client.user.setPresence({
-    game: { name: `${client.users.size} users | ${config.prefix}help`, type: 'LISTENING' },
-    status: 'online'
-  });
+  let setStatus = setInterval(function () {
+    // Game Presence Interval
+    let games = [
+      { value: `in ${client.guilds.size} different servers!`, type: 'PLAYING', help: false },
+      { value: `with ${client.users.get(config.ownerID).tag}`, type: 'PLAYING', help: true },
+
+      { value: `${client.users.size} users`, type: 'WATCHING', help: true },
+      { value: `like a hawk 🦅`, type: 'WATCHING', help: true },
+
+      { value: `${client.users.size} users`, type: 'LISTENING', help: true },
+      { value: `YouTube Red`, type: 'LISTENING', help: true },
+
+      // { value: ``, type: '', url: '', help: false }
+    ];
+
+    // games.forEach(value => value.url = value.url ? value.url : '');
+    
+    let i = games[Math.floor(Math.random() * games.length)];
+
+    client.user.setPresence({
+      game: { name: `${games[i].value}${games[i].help ? ` | ${config.prefix}help` : ''}`, url: games[i].url, type: games[i].type },
+      status: 'online'
+    });
+  }, 30000);
 });
