@@ -28,7 +28,7 @@ exports.run = (client => {
 
     // games.forEach(value => value.url = value.url ? value.url : '');
     
-    let i = games[Math.floor(Math.random() * games.length)];
+    let i = Math.floor(Math.random() * games.length);
 
     client.user.setPresence({
       game: { name: `${games[i].value}${games[i].help ? ` | ${config.prefix}help` : ''}`, url: games[i].url, type: games[i].type },
