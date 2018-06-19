@@ -1,3 +1,7 @@
+exports.joined = ((client, user, name) => {
+  exports.setRoles(client, user, null, false);
+});
+
 exports.verify = ((client, user, name) => {
   exports.setRoles(client, user, name, false);
 });
@@ -22,9 +26,9 @@ exports.setRoles = ((client, user, name, registration) => {
     // fetches user
     const pl_server_member = member;
 
-    const role_to_add = !registration ? verified_ID : registered_ID;
+    const role_to_add = !registration ? (!name ? spectators_ID : verified_ID) : registered_ID;
     const role_to_remove = !registration ? spectators_ID : null;
-    const reason = !registration ? 'Account Verification' : 'PL Registration';
+    const reason = !registration ? (!name ? 'Server Join' : 'Account Verification') : 'PL Registration';
     
     if (!pl_server_member) return console.log(discord_tag + ' isn\'t in PL server!');
     if (!client_in_PL.hasPermission(["MANAGE_NICKNAMES", "MANAGE_ROLES"])) return console.log('Insufficient permissions in Plazma League Server.');
@@ -32,22 +36,20 @@ exports.setRoles = ((client, user, name, registration) => {
     if (!pl_server_member) return console.log(`${discord_tag} registered, but not in Plazma League server.`);
   
     // performs actions
-
-    console.log('setting nickname');
-    pl_server_member.setNickname(name, reason).catch(err => {
-      console.log(`Unable to set nickname ${name} to ${discord_tag}`);
-    });
-  
-    console.log('adding specified role');
     pl_server_member.addRole(role_to_add).catch(err => {
       const actual_role = pl_server.roles.get(role_to_add);
       console.log(`Unable to add "${actual_role.name}" role to ${discord_tag}`);
     });
   
-    console.log('removing specified role');
     pl_server_member.removeRole(role_to_remove).catch(err => {
       const actual_role = pl_server.roles.get(role_to_remove);
       console.log(`Unable to remove "${actual_role}" role from ${discord_tag}`)
+    });
+
+    if (!name) return; // returns if no name specified
+
+    pl_server_member.setNickname(name, reason).catch(err => {
+      console.log(`Unable to set nickname ${name} to ${discord_tag}`);
     });
 
   }).catch(err => {
