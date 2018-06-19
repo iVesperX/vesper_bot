@@ -56,7 +56,7 @@ exports.run = ((client, message, args) => {
   message.channel.send(`Are you sure you want to register as ${verified_account}? React with :white_check_mark: to confirm your registration.`).then(message => {
     message.react('✅').then(() => {
       const filter = ((reaction, user) => reaction.emoji.name == '✅' && message.author.id == user.id);
-      const collector = message.channel.createReactionCollector(message, filter, { time: 90000 });
+      const collector = message.createReactionCollector(message, filter, { time: 90000 });
 
       collector.on('collect', r => {
         // existent account, owned
