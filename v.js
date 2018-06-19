@@ -2,7 +2,7 @@ const Discord = require('discord.js');
 const client = new Discord.Client();
 
 const fs = require('fs');
-const token = process.env.token ? process.env.token : require('./token.json').value;
+const token = process.env.token ? process.env.token : require('./passwords.json').token;
 
 fs.readdir("./events/", (err, files) => {
   if (err) return console.error(err);

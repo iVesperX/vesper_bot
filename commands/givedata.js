@@ -7,9 +7,23 @@ const db = new JsonDB('data', true, true);
 const CODE = '```';
 
 exports.run = ((client, message, args) => {
+  if (message.author.id != config.ownerID) return;
+
   fs.readFile('data.json', (err, data) => {
     client.fetchUser(config.ownerID).then(user => {
-      user.send(`${CODE}json\n${data + CODE}`);
-    })
+      let parsed_data = JSON.parse(data);
+      if (!args.length) {
+        return user.send(`${CODE}json\n${data + CODE}`);
+      }
+
+      switch (args[0]) {
+        case '-teams':
+          return user.send(`${CODE}json\n${JSON.stringify(parsed_data.teams) + CODE}`);
+          break;
+        case '-players':
+        return user.send(`${CODE}json\n${JSON.stringify(parsed_data.players) + CODE}`);
+          break;
+      }
+    });
   });
 });
