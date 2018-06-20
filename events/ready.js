@@ -4,6 +4,9 @@ const JsonDB = require('node-json-db');
 const db = new JsonDB('data', true);
 const data = db.getData('/');
 
+const maintenance = true;
+const precedent = maintenance ? '⛔ ' : '';
+
 const init = require('../util/init.js');
 
 exports.run = (client => {
@@ -36,5 +39,5 @@ exports.run = (client => {
     });
   }, 30000);
   
-  client.user.setUsername('⛔ Vesper');
+  client.user.setUsername(precedent + 'Vesper');
 });
