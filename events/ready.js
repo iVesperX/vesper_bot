@@ -32,7 +32,7 @@ exports.run = (client => {
 
     client.user.setPresence({
       game: { name: `${games[i].value}${games[i].help ? ` | ${config.prefix}help` : ''}`, url: games[i].url, type: games[i].type },
-      status: 'dnd'
+      status: 'online'
     });
   }, 30000);
   

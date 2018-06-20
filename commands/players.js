@@ -62,17 +62,27 @@ exports.run = ((client, message, args) => {
          .setFooter(client.user.tag, client.user.avatarURL);
 
     for (let group in data) {
-      if (group == 'init' || group == 'teams') continue;
+      if (group == 'init' || group == 'pl_invite' || group == 'teams') continue;
 
       let role = (group != 'players') ? roles.verified : roles.players;
+      let role_name = (group != 'players') ? 'Account Verified' : 'Registered Players'
+      let role_mention = message.guild.id == '310995545588105217' ? `<@&${role}>` : role_name;
       let full_list = '';
 
-      for (let i = 1; i < data[group].length; i++) {
-        if (i > 1) full_list += ', ';
-        full_list += (group != 'players') ? data[group][i] : data[group][i].name;
+      if (group == 'players') {
+        for (let i = 1; i < data[group].length; i++) {
+          if (i > 1) full_list += ', ';
+          full_list += data[group][i].name;
+        }
+      } else if (group == 'verified') {
+        for (let i in data[group]) {
+          if (i == 0) continue;
+          if (full_list.length) full_list += ', ';
+          full_list += data[group][i][0];
+        }
       }
 
-      players_list.addField(`**<@&${role}>**`, full_list);
+      players_list.addField(`**${role_mention}**`, full_list);
     }
 
     message.channel.send(players_list);
