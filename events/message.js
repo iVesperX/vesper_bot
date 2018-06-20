@@ -1,4 +1,4 @@
-const config = require('../config.json');
+﻿const config = require('../config.json');
 
 exports.run = ((client, message) => {
   const c = message.content;
@@ -24,7 +24,7 @@ exports.run = ((client, message) => {
   }
 
   try {
-    if (maintenance) return message.channel.send('Bot is down currently for maintenance.');
+    if (maintenance) return message.channel.send('Bot is currently down for maintenance.');
     let command_file = require(command_path);
     command_file.run(client, message, args);
     
