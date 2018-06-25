@@ -1,8 +1,5 @@
-const config = require('../config.json');
+const config = require('../storage/config.json');
 const verification = require('../util/verification.js');
-
-const JsonDB = require('node-json-db');
-const db = new JsonDB('data', true);
 
 const devs = [
   '191333046786588672' // Vesper
@@ -15,7 +12,7 @@ const servers = [
   '372490159649718274'  // Art Editors
 ];
 
-exports.run = ((client, member) => {
+exports.run = (async (client, member) => {
   if (!servers.includes(member.guild.id)) return;
   // if (devs.includes(member.user.id)) return;
 
@@ -29,9 +26,7 @@ exports.run = ((client, member) => {
 
   // PL Server
   if (member.guild.id == servers[1] || member.guild.id == servers[2]) {
-    db.reload();
-    const data = db.getData('/');
-    const users = data.verified;
+    const users = (await client.database.collection('verified').findOne({})).data;
 
     const verified_account = users[member.user.id] ? users[member.user.id][0] : null;
     verification.joined(client, member.user, verified_account);

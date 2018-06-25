@@ -4,7 +4,7 @@ const JsonDB = require('node-json-db');
 const db = new JsonDB('data', true);
 const data = db.getData('/');
 
-const maintenance = true;
+const maintenance = false;
 const precedent = maintenance ? '⛔ ' : '';
 
 const init = require('../util/init.js');

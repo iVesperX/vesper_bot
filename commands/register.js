@@ -1,22 +1,19 @@
 const request = require('request');
-const config = require('../config.json');
+const config = require('../storage/config.json');
 const verification = require('../util/verification.js');
-
-const JsonDB = require('node-json-db');
-const db = new JsonDB('data', true);
 
 const CODE = '```';
 
 const equals = ((value1, value2) => value1.toLowerCase() == value2.toLowerCase());
 const clone = (o => JSON.parse(JSON.stringify(o)));
 
-exports.run = ((client, message, args) => {
+exports.run = (async (client, message, args) => {
   const account = args.join(' ');
   const discord_tag = message.author.tag;
   const format =  `\`${config.prefix}register {account_name}\``;
   
   const pl_server_member = client.guilds.get('310995545588105217').members.get(message.author.id);
-  const inv = db.getData('/pl_invite');
+  const inv = (await client.database.collection('pl_invite').findOne({})).data;
 
   if (!pl_server_member) return message.reply(`You are currently not in Plazma League Discord! You may only register if you are verified in the chat. PL Discord chat is public and open to everyone.\n\nInvitation link: ${inv ? inv : '-'}`)
 
@@ -25,12 +22,11 @@ exports.run = ((client, message, args) => {
   }
 
   const add_roles = (() => verification.register(client, message.author, account));
-  
-  db.reload();
-  const players = db.getData('/players');
-  const users = db.getData('/verified');
 
   // where the magic happens
+  const players = (await client.database.collection('players').findOne({})).data;
+  const users = (await client.database.collection('verified').findOne({})).data;
+
   if (!users[message.author.id]) return message.reply(`you have not verified yourself as any account!\n\nUse \`${config.prefix}verify {pb2_account}\` to verify an account to register with.`);
 
   const registered_account_index = players.findIndex(p => {
@@ -64,8 +60,10 @@ exports.run = ((client, message, args) => {
         
         // actually pushes player
         players.push(new_player);
-        db.push('/players', players);
-        db.reload();
+        
+        // actually updates document
+        client.database.collection('players').updateOne({}, { $set: { 'data': players } });
+
         add_roles();
 
         if (config.bot_server) {
