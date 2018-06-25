@@ -19,6 +19,7 @@ exports.run = (client => {
     let games = [
       { value: `in only ${client.guilds.size} guilds...`, type: 'PLAYING', help: false },
       { value: `with ${client.users.get(config.ownerID).tag}`, type: 'PLAYING', help: true },
+      { value: `24/7 ❤`, type: 'PLAYING', help: true },
 
       { value: `${client.users.size} users`, type: 'WATCHING', help: true },
       { value: `like a hawk 🦅`, type: 'WATCHING', help: true },
