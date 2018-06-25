@@ -1,4 +1,4 @@
-const config = require('../config.json');
+const config = require('../storage/config.json');
 
 const JsonDB = require('node-json-db');
 const db = new JsonDB('data', true);

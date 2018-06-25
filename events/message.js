@@ -1,4 +1,4 @@
-﻿const config = require('../config.json');
+﻿const config = require('../storage/config.json');
 
 exports.run = ((client, message) => {
   const c = message.content;
