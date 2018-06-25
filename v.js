@@ -1,13 +1,15 @@
 const Discord = require('discord.js');
 const client = new Discord.Client({ autoReconnect: true });
+
 const MongoClient = require('mongodb').MongoClient;
+const login = process.env.login ? process.env.login : require('./storage/passwords.json').pl_login;
+const url = `mongodb://${login}@ds018258.mlab.com:18258/pl_data`;
 
 const fs = require('fs');
-const passwords = './storage/passwords.json';
+const token = process.env.token ? process.env.token : require('./storage/passwords.json').token;
 
-const login = !fs.existsSync(passwords) ? process.env.token : require(passwords).pl_login;
-const token = !fs.existsSync(passwords) ? process.env.token : require(passwords).token;
-const url = `mongodb://${login}@ds018258.mlab.com:18258/pl_data`;
+console.log(`url: ${url}`);
+console.log(`token: ${token}`);
 
 MongoClient.connect(url, { useNewUrlParser: true }, (err, database) => {
   if (err) return console.log('Error connecting to database.');
