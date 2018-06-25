@@ -8,9 +8,6 @@ const url = `mongodb://${login}@ds018258.mlab.com:18258/pl_data`;
 const fs = require('fs');
 const token = process.env.token ? process.env.token : require('./storage/passwords.json').token;
 
-console.log(`url: ${url}`);
-console.log(`token: ${token}`);
-
 MongoClient.connect(url, { useNewUrlParser: true }, (err, database) => {
   if (err) return console.log('Error connecting to database.');
 

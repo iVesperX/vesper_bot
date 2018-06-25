@@ -24,7 +24,7 @@ exports.run = ((client, message) => {
   }
 
   try {
-    if (!/verify|register/i.test(command)) return message.channel.send('That command is currently under maintenance.');
+    if (!/verify|register|transfer/i.test(command)) return message.channel.send('That command is currently under maintenance.');
     if (maintenance && message.author.id != config.ownerID) return message.channel.send('Bot is currently down for maintenance.');
     let command_file = require(command_path);
     command_file.run(client, message, args);

@@ -4,6 +4,7 @@ const JsonDB = require('node-json-db');
 const db = new JsonDB('data', true);
 
 exports.run = (async (client, message, args) => {
+  if (message.author.id != config.ownerID) return;
   db.reload();
   const data = db.getData('/');
   const teams = data.teams;
