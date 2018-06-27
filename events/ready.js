@@ -5,7 +5,7 @@ const precedent = maintenance ? '⛔ ' : '';
 
 const init = require('../util/init.js');
 
-exports.run = (client => {
+exports.run = (async (client) => {
   console.log('Vesper locked and loaded.');
 
   let initialized = await client.database.collection('init').findOne({});
