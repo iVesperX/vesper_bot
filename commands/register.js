@@ -3,6 +3,7 @@ const config = require('../storage/config.json');
 const verification = require('../util/verification.js');
 
 const CODE = '```';
+const type = 'fix';
 
 const equals = ((value1, value2) => value1.toLowerCase() == value2.toLowerCase());
 const clone = (o => JSON.parse(JSON.stringify(o)));
@@ -47,7 +48,7 @@ exports.run = (async (client, message, args) => {
     return message.channel.send(`Another user is already registered as \`${players[other_registered_account_index].name}\`. You may not register as that account.`);
   }
 
-  if (!verified_account || equals(config.db_placeholder, account)) return message.channel.send(`You are not verified as \`${account}\`. You must either do \`${config.prefix}verify ${account}\` or register from one of the following accounts:\n\n${CODE}css\n${users[message.author.id].join('\n') + CODE}`);
+  if (!verified_account || equals(config.db_placeholder, account)) return message.channel.send(`You are not verified as \`${account}\`. You must either do \`${config.prefix}verify ${account}\` or register from one of the following accounts:\n\n${CODE + type}\n${users[message.author.id].join('\n') + CODE}`);
 
   message.channel.send(`Are you sure you want to register as ${verified_account}? React with :white_check_mark: to confirm your registration.\n\n*Expires in 10 seconds...*`).then(new_message => {
     new_message.react('✅').then(() => {

@@ -1,12 +1,9 @@
 const Discord = require('discord.js');
-const config = require('../config.json');
+const config = require('../storage/config.json');
 
 const init = require('../util/init.js');
 
-const JsonDB = require('node-json-db');
-const db = new JsonDB('data', true, true);
-
-exports.run = ((client, message, args) => {
+exports.run = (async (client, message, args) => {
   const reset_flag = '-r';
 
   const pl_server = client.guilds.get('310995545588105217');
@@ -15,11 +12,10 @@ exports.run = ((client, message, args) => {
 
   const role_color = !message.guild.me.displayColor ? 12172222 : message.guild.me.displayColor;
   
-  db.reload();
-  const data = db.getData('/');
-  const inv = data.pl_invite;
-  const teams = data.teams;
-  const players = data.players;
+  // where the magic happens
+  const inv = (await client.database.collection('pl_invite').findOne({})).data;
+  const teams = (await client.database.collection('teams').findOne({})).data;
+  const players = (await client.database.collection('players').findOne({})).data;
 
   if (teams.length <= 1) return message.channel.send('There are currently no teams.');
   
@@ -32,7 +28,7 @@ exports.run = ((client, message, args) => {
 
       collector.on('collect', m => {
         if (m.content == 'YES') {
-          init.initialize.teams();
+          init.initialize.teams(client);
           message.channel.send('All teams successfully cleared.');          
           collector.stop();
         } else if (m.content == 'NO') {

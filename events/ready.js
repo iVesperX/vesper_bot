@@ -1,9 +1,5 @@
 const config = require('../storage/config.json');
 
-const JsonDB = require('node-json-db');
-const db = new JsonDB('data', true);
-const data = db.getData('/');
-
 const maintenance = false;
 const precedent = maintenance ? '⛔ ' : '';
 
@@ -12,7 +8,9 @@ const init = require('../util/init.js');
 exports.run = (client => {
   console.log('Vesper locked and loaded.');
 
-  if (data.init !== true) init.initialize.all(client);
+  let initialized = await client.database.collection('init').findOne({});
+  (!initialized || !initialized.data || initialized.data !== true) ? init.initialize.all(client) : console.log('Data has already been initialized');
+
 
   let setStatus = setInterval(function () {
     // Game Presence Interval

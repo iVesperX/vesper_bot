@@ -1,4 +1,4 @@
-exports.joined = ((client, user, name) => {
+exports.joined = ((client, user) => {
   exports.setRoles(client, user, null, false);
 });
 
@@ -15,7 +15,7 @@ exports.setRoles = ((client, user, name, registration) => {
 
   if (!pl_server) return console.log('I am not in Plazma League server for some reason...');
 
-  const client_in_PL = pl_server.members.get(client.user.id);
+  const client_in_PL = pl_server.me;
   const registered_ID = '417462892087214081';
   const verified_ID = '421819247988310026';
   const spectators_ID = '319613891208282112';

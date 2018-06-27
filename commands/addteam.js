@@ -1,12 +1,9 @@
-const config = require('../config.json');
-
-const JsonDB = require('node-json-db');
-const db = new JsonDB('data', true);
+const config = require('../storage/config.json');
 
 const equals = ((value1, value2) => value1.toLowerCase() == value2.toLowerCase());
 const clone = (o => JSON.parse(JSON.stringify(o)));
 
-exports.run = ((client, message, args) => {
+exports.run = (async (client, message, args) => {
   const manager_flag = '-m';
   const manager_modifier = args.indexOf(manager_flag);
   const format =  `\`${config.prefix}addteam {name} ${manager_flag} {manager}\``;
@@ -21,10 +18,10 @@ exports.run = ((client, message, args) => {
     return message.channel.send(`The correct format is ${format}`);
   }
 
-  db.reload();
-  const data = db.getData('/');
-  const teams = data.teams;
-  const players = data.players;
+
+  // where the magic happens
+  const teams = (await client.database.collection('teams').findOne({})).data;
+  const players = (await client.database.collection('players').findOne({})).data;
 
   let team = [];
   let manager = [];
@@ -60,11 +57,11 @@ exports.run = ((client, message, args) => {
 
   // pushes to teams object
   teams.push(new_team);
-  db.push('/teams', teams);
+  client.database.collection('teams').updateOne({}, { $set: { 'data': teams } });
 
   players[manager_index].team = team;
   players[manager_index].is_manager = true;
-  db.push('/players', players);
+  client.database.collection('players').updateOne({}, { $set: { 'data': players } });
 
   message.channel.send(`Team ${team} is registered with ${players[manager_index].name} as their manager.`);
 });

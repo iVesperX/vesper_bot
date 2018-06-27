@@ -1,7 +1,4 @@
-const config = require('../config.json');
-
-const JsonDB = require('node-json-db');
-const db = new JsonDB('data', true);
+const config = require('../storage/config.json');
 
 const equals = ((value1, value2) => value1.toLowerCase() == value2.toLowerCase());
 const clone = (o => JSON.parse(JSON.stringify(o)));
@@ -14,10 +11,8 @@ exports.run = ((client, message, args) => {
     return message.channel.send('Choose a player to sign to your team.');
   }
 
-  db.reload();
-  const data = db.getData('/');
-  const teams = data.teams;
-  const players = data.players;
+  const teams = (await client.database.collection('teams').findOne({})).data;
+  const players = (await client.database.collection('players').findOne({})).data;
 
   const team_index = teams.findIndex(t => t.manager_id == message.author.id);
   const player_index = players.findIndex(p => equals(p.name, player_to_sign));
@@ -34,8 +29,9 @@ exports.run = ((client, message, args) => {
   teams[team_index].players.push(players[player_index].name);
   players[player_index].team = teams[team_index].name;
 
-  db.push('/teams', teams);
-  db.push('/players', players);
+  // pushes to mongo
+  client.database.collection('teams').updateOne({}, { $set: { 'data': teams } });
+  client.database.collection('players').updateOne({}, { $set: { 'data': players } });
 
   console.log(`${players[player_index].name} successfully signed by ${teams[team_index].name}`);
   message.channel.send(`\`${players[player_index].name}\` has successfully been signed to Team ${teams[team_index].name}.`);

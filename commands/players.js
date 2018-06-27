@@ -1,10 +1,7 @@
 const Discord = require('discord.js');
-const config = require('../config.json');
+const config = require('../storage/config.json');
 
 const init = require('../util/init.js');
-
-const JsonDB = require('node-json-db');
-const db = new JsonDB('data', true);
 
 const roles = {
   players: '417462892087214081',
@@ -12,7 +9,7 @@ const roles = {
   spectators: '319613891208282112'
 };
 
-exports.run = ((client, message, args) => {
+exports.run = (async (client, message, args) => {
   const reset_flag = '-r';  
 
   const pl_server = client.guilds.get('310995545588105217');
@@ -21,11 +18,10 @@ exports.run = ((client, message, args) => {
 
   const role_color = !message.guild.me.displayColor ? 12172222 : message.guild.me.displayColor;
 
-  db.reload();
-  const data = db.getData('/');
-  const inv = data.pl_invite;
-  const players = data.players;
-  const users = data.verified;
+  // where the magic happens
+  const inv = (await client.database.collection('pl_invite').findOne({})).data;
+  const players = (await client.database.collection('players').findOne({})).data;
+  const users = (await client.database.collection('verified').findOne({})).data;
 
   if (players.length <= 1 && users.length <= 1) return message.channel.send('There are currently no participants in PL.');
 
@@ -54,6 +50,7 @@ exports.run = ((client, message, args) => {
   } else {
     if (!pl_server) return;
     const players_list = new Discord.RichEmbed();
+    const collections = [players, users];
     
     players_list.setAuthor(pl_name, pl_icon, inv)
          .setColor(role_color)
@@ -61,27 +58,29 @@ exports.run = ((client, message, args) => {
          .setThumbnail(pl_icon)
          .setFooter(client.user.tag, client.user.avatarURL);
 
-    for (let group in data) {
-      if (group == 'init' || group == 'pl_invite' || group == 'teams') continue;
+    for (let c = 0; c < collections.length; c++) {
+      // 0 : players
+      // 1 : users
 
-      let role = (group != 'players') ? roles.verified : roles.players;
-      let role_name = (group != 'players') ? 'Account Verified' : 'Registered Players'
+      let role = (c == 1) ? roles.verified : roles.players;
+      let role_name = (c == 1) ? 'Account Verified' : 'Registered Players'
       let role_mention = message.guild.id == '310995545588105217' ? `<@&${role}>` : role_name;
       let full_list = '';
 
-      if (group == 'players') {
-        for (let i = 1; i < data[group].length; i++) {
+      if (c == 0) {
+        for (let i = 1; i < collections[c].length; i++) {
           if (i > 1) full_list += ', ';
-          full_list += data[group][i].name;
+          full_list +=collections[c][i].name;
         }
-      } else if (group == 'verified') {
-        for (let i in data[group]) {
+      } else if (c == 1) {
+        for (let i in collections[c]) {
           if (i == 0) continue;
           if (full_list.length) full_list += ', ';
-          full_list += data[group][i][0];
+          full_list += collections[c][i][0];
         }
       }
 
+      full_list = full_list.length ? full_list : 'N/A';
       players_list.addField(`**${role_mention}**`, full_list);
     }
 

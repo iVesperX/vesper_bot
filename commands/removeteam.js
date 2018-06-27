@@ -1,12 +1,9 @@
-const config = require('../config.json');
-
-const JsonDB = require('node-json-db');
-const db = new JsonDB('data', true);
+const config = require('../storage/config.json');
 
 const equals = ((value1, value2) => value1.toLowerCase() == value2.toLowerCase());
 const clone = (o => JSON.parse(JSON.stringify(o)));
 
-exports.run = ((client, message, args) => {
+exports.run = (async (client, message, args) => {
   const team = args.join(' ');
   const format =  `\`${config.prefix}removeteam {name}\``;
 
@@ -16,10 +13,9 @@ exports.run = ((client, message, args) => {
     return message.channel.send('Choose a team to remove.')
   }
 
-  db.reload();
-  const data = db.getData('/');
-  const teams = data.teams;
-  const players = data.players;
+  // where the magic happens
+  const teams = (await client.database.collection('teams').findOne({})).data;
+  const players = (await client.database.collection('players').findOne({})).data;
 
   const team_index = teams.findIndex(t => equals(t.name, team));
 
@@ -40,8 +36,9 @@ exports.run = ((client, message, args) => {
     return p;
   });
 
-  db.push('/teams', teams);
-  db.push('/players', players);
+  // pushes to mongo
+  client.database.collection('teams').updateOne({}, { $set: { 'data': teams } });
+  client.database.collection('players').updateOne({}, { $set: { 'data': players } });
 
   message.channel.send(`${real_team_name} has been successfully removed from PL.`);
 });

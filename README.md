@@ -6,9 +6,9 @@ Vesper is built specifically for [Plazma League Discord](https://discord.gg/XM4D
 
 Vesper's main purpose is to store players, teams, and verified users in a database for Plazma League use.
 
-> **New!** Instead of SQLite, Vesper is now using JsonDB!
+> **New!** Instead of SQLite, Vesper is now using ~~JsonDB~~ **MongoDB**!
 
-### Implemented Commands (JsonDB)
+### Implemented Commands (MongoDB)
 - `v!register`
 - `v!teams`
 - `v!players`
@@ -17,7 +17,13 @@ Vesper's main purpose is to store players, teams, and verified users in a databa
 - `v!sign`
 - `v!waive`
 
+- **`v!backup`**
+
 __I'll go more in depth into each command at a later date.__
+
+### MongoDB Hosting
+
+Currently, I am hosting my database through [mLab](https://mlab.com/). It's very simple and I enjoy using it to store my data remotely.
 
 ---
 

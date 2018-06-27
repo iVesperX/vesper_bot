@@ -25,13 +25,17 @@ exports.run = (async (client, member) => {
   }
 
   // PL Server
-  if (member.guild.id == servers[1] || member.guild.id == servers[2]) {
+  if (member.guild.id == servers[1]) {
     const users = (await client.database.collection('verified').findOne({})).data;
 
     const verified_account = users[member.user.id] ? users[member.user.id][0] : null;
-    verification.joined(client, member.user, verified_account);
-    
-    if (!verified_account) return;
+        
+    if (!verified_account) {
+      verification.joined(client, member.user);
+      return;
+    } else {
+      verification.verify(client, member.user, verified_account);
+    }
 
     const account_verified = member.guild.roles.find('name', 'Account Verified');
 
