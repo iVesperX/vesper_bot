@@ -54,6 +54,11 @@ exports.run = (async (client, message, args) => {
     new_message.react('✅').then(() => {
       const filter = ((reaction, user) => reaction.emoji.name === '✅' && message.author.id === user.id);
       new_message.awaitReactions(filter, { max: 1, time: 10000 }).then(collected => {
+        if (!collected.size) {
+          new_message.edit(`${question}Query expired.`);
+          return new_message.clearReactions();
+        }
+        
         // existent account, owned
         let new_player = clone(players[0]);
         new_player.name = verified_account;
