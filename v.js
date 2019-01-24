@@ -1,6 +1,11 @@
 const Discord = require('discord.js');
 const client = new Discord.Client({ autoReconnect: true });
-const storage = require('./storage/passwords.json');
+
+try {
+  const storage = require('./storage/passwords.json');
+} catch (err) {
+  const storage = {};
+}
 
 const MongoClient = require('mongodb').MongoClient;
 const login = process.env.pl_login ? process.env.pl_login : storage.pl_login;
