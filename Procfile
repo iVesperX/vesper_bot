@@ -1,1 +1,1 @@
-worker: node v.js
+worker: npm start
