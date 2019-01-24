@@ -4,7 +4,7 @@
   "description": "",
   "main": "v.js",
   "scripts": {
-    "start": "npm i && node v.js",
+    "start": "node v.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
