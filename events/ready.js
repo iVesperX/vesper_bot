@@ -9,8 +9,10 @@ exports.run = (async (client) => {
   console.log('Vesper locked and loaded.');
 
   client.fetchUser(config.ownerID).then(owner => {
-    const formatted_date = today.toLocaleString('en-US', config.date_options) + ', ' + today.toLocaleTimeString();
-    owner.send(`Successfully deployed on ${formatted_date}`)
+    const today = new Date(),
+          formatted_date = today.toLocaleString('en-US', config.date_options) + ', ' + today.toLocaleTimeString();
+    
+    owner.send(`Successfully deployed on ${formatted_date}`);
   });
 
   let initialized = await client.database.collection('init').findOne({});
