@@ -14,7 +14,9 @@ const MongoClient = require('mongodb').MongoClient,
 const fs = require('fs'),
       token = process.env.token ? process.env.token : storage.token;
 
-MongoClient.connect(url, { useNewUrlParser: true }).then(database => {
+MongoClient.connect(url, { useNewUrlParser: true }, (err, database) => {
+  if (err) return console.log('Error connecting to database.');
+
   client.database = database.db('pl_data');
 
   fs.readdir("./events/", (err, files) => {
@@ -30,4 +32,4 @@ MongoClient.connect(url, { useNewUrlParser: true }).then(database => {
   client.login(token).then(() => {
     console.log('Successfully authenticated via bot token.')
   });
-}).error(err => console.log('Error connecting to database.'));
+});
