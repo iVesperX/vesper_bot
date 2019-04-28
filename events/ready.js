@@ -43,5 +43,5 @@ exports.run = (async (client) => {
     });
   }, 30000);
   
-  client.user.setUsername(precedent + 'Vesper');
+  client.user.setUsername(precedent + config.name);
 });
