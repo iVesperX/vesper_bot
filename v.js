@@ -1,11 +1,11 @@
 const Discord = require('discord.js'),
       client = new Discord.Client({ autoReconnect: true });
 
+let storage = { pl_login: '', token: '' };
+
 try {
-  const storage = require('./storage/passwords.json');
-} catch (err) {
-  const storage = {};
-}
+  storage = require('./storage/passwords.json');
+} catch (err) {}
 
 const MongoClient = require('mongodb').MongoClient,
       login = process.env.pl_login ? process.env.pl_login : storage.pl_login,
@@ -14,7 +14,7 @@ const MongoClient = require('mongodb').MongoClient,
 const fs = require('fs'),
       token = process.env.token ? process.env.token : storage.token;
 
-MongoClient.connect(url, { useNewUrlParser: true }, (err, database) => {
+MongoClient.connect(url, { useNewUrlParser: true }).then((err, database) => {
   if (err) return console.log('Error connecting to database.');
 
   client.database = database.db('pl_data');
@@ -28,6 +28,8 @@ MongoClient.connect(url, { useNewUrlParser: true }, (err, database) => {
       client.on(event, (...args) => event_file.run(client, ...args));
     }
   });
-  
-  client.login(token);
+
+  client.login(token).then(() => {
+    console.log('Successfully authenticated via bot token.')
+  });
 });

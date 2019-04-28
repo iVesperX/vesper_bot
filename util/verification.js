@@ -1,3 +1,5 @@
+const config = require('../storage/config.json');
+
 exports.joined = ((client, user) => {
   exports.setRoles(client, user, null, false);
 });
@@ -16,9 +18,9 @@ exports.setRoles = ((client, user, name, registration) => {
   if (!pl_server) return console.log('I am not in Plazma League server for some reason...');
 
   const client_in_PL = pl_server.me;
-  const registered_ID = '417462892087214081';
-  const verified_ID = '421819247988310026';
-  const spectators_ID = '319613891208282112';
+  const registered_ID = config.pl_server.roles.registeredID;
+  const verified_ID = config.pl_server.roles.verifiedID;
+  const spectators_ID = config.pl_server.roles.spectatorsID;
   
   const discord_tag = user.tag;
 

@@ -1,13 +1,14 @@
-﻿const config = require('../storage/config.json');
+﻿const config = require('../storage/config.json'),
+      prefix = process.env.prefix || config.prefix;
 
 exports.run = ((client, message) => {
   const c = message.content;
   const args = c.split(' ');
-  const command = args.shift().slice(config.prefix.length);
+  const command = args.shift().slice(prefix.length);
   const command_path = `../commands/${command}.js`;
   const maintenance = /⛔/i.test(client.user.username);
   
-  if (c.indexOf(config.prefix) !== 0 || message.author.bot) return;
+  if (c.indexOf(prefix) !== 0 || message.author.bot) return;
 
   const command_info = config.commands[command.toLowerCase()];
   
@@ -42,7 +43,7 @@ exports.run = ((client, message) => {
     const command_not_found = err.stack.indexOf(`\'${command_path}\'`) < 0;
 
     if (command_not_found) {
-      console.log(`----\n[${config.prefix + command.charAt(0).toUpperCase() + command.slice(1)}] ${err.stack}`);
+      console.log(`----\n[${prefix + command.charAt(0).toUpperCase() + command.slice(1)}] ${err.stack}`);
     } else {
       console.log(`----\nCommand \"${command}\" was not found.`);
     }

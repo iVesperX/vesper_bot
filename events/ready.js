@@ -12,7 +12,7 @@ exports.run = (async (client) => {
   (!initialized || !initialized.data || initialized.data !== true) ? init.initialize.all(client) : console.log('Data has already been initialized');
 
 
-  let setStatus = setInterval(function () {
+  setInterval(function () {
     // Game Presence Interval
     let games = [
       { value: `in only ${client.guilds.size} guilds...`, type: 'PLAYING', help: false },
