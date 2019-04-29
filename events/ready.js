@@ -13,13 +13,14 @@ exports.run = (async (client) => {
       const today = new Date(),
             formatted_date = today.toLocaleString('en-US', config.date_options) + ', ' + today.toLocaleTimeString();
       
-      owner.send(`Successfully deployed on ${formatted_date}`);
+      owner.send(`Successfully deployed on ${formatted_date} (UTC)`);
     });
   }
 
   let initialized = await client.database.collection('init').findOne({});
-  (!initialized || !initialized.data || initialized.data !== true) ? init.initialize.all(client) : console.log('Data has already been initialized');
-
+  (!initialized || !initialized.data || initialized.data !== true) ? init.initialize.all(client) : console.log('Data has already been initialized.');
+  
+  init.initialize.invite(client);
 
   setInterval(function () {
     // Game Presence Interval

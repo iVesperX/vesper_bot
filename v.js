@@ -16,7 +16,7 @@ const fs = require('fs'),
 
 MongoClient.connect(url, { useNewUrlParser: true }, (err, database) => {
   if (err) return console.log('Error connecting to database.');
-  if (process.env) client.deployed = true;
+  if (process.env && process.env.token) client.deployed = true;
 
   client.database = database.db('pl_data');
 
