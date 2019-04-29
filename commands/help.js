@@ -1,5 +1,5 @@
 const Discord = require('discord.js');
-const config = require('../config.json');
+const config = require('../storage/config.json');
 
 exports.run = ((client, message, args) => {
   const command = args[0];

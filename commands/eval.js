@@ -1,5 +1,5 @@
 const reactor = require('../util/reactor.js');
-const config = require('../config.json');
+const config = require('../storage/config.json');
 
 const code = '```';
 
