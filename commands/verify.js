@@ -41,7 +41,7 @@ exports.run = (async (client, message, args) => {
     const url = pb2_api + player + api_key_string;
 
     // not already in database
-    request.get(url), function(err, res, body) {
+    request.get(url, function(err, res, body) {
       if (err) return console.log(err);
       if (!res || res.statusCode != 200) return console.log('Invalid status/status code.');
       const account = JSON.parse(body);
