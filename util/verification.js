@@ -43,17 +43,17 @@ exports.setRoles = ((client, user, name, registration) => {
       console.log(`Unable to add "${actual_role.name}" role to ${discord_tag}`);
     });
 
+    if (!name) return; // returns if no name specified
+
+    pl_server_member.setNickname(name, reason).catch(err => {
+      console.log(`Unable to set nickname ${name} to ${discord_tag}`);
+    });
+
     if (registration) return; // returns if registering
   
     pl_server_member.removeRole(role_to_remove).catch(err => {
       const actual_role = pl_server.roles.get(role_to_remove);
       console.log(`Unable to remove "${actual_role}" role from ${discord_tag}`)
-    });
-
-    if (!name) return; // returns if no name specified
-
-    pl_server_member.setNickname(name, reason).catch(err => {
-      console.log(`Unable to set nickname ${name} to ${discord_tag}`);
     });
 
   }).catch(err => {
