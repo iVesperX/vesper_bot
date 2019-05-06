@@ -1,8 +1,10 @@
 const request = require('request');
 const config = require('../storage/config.json');
+const api_key = process.env.pb2_api_key || require('../storage/passwords.json').pb2_api_key; 
 const verification = require('../util/verification.js');
 
-const pb2_api = 'http://plazmaburst2.com/extract.php?login=';
+const pb2_api = 'http://plazmaburst2.com/extract.php?login=',
+      api_key_string = '&api_key=' + api_key;
 
 const equals = ((value1, value2) => value1.toLowerCase() == value2.toLowerCase());
 const clone = (o => JSON.parse(JSON.stringify(o)));
@@ -36,8 +38,10 @@ exports.run = (async (client, message, args) => {
   } else {
     if (player.length < 3) return invalid_account();
 
+    const url = pb2_api + player + api_key_string;
+
     // not already in database
-    request.get(pb2_api + player, function(err, res, body) {
+    request.get(url), function(err, res, body) {
       if (err) return console.log(err);
       if (!res || res.statusCode != 200) return console.log('Invalid status/status code.');
       const account = JSON.parse(body);
