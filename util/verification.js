@@ -43,7 +43,7 @@ exports.setRoles = ((client, user, name, registration) => {
       console.log(`Unable to add "${actual_role && actual_role.name}" role to ${discord_tag}`);
     });
 
-    if (!name) {
+    if (name) {
       pl_server_member.setNickname(name, reason).catch(err => {
         console.log(`Unable to set nickname ${name} to ${discord_tag}`);
       });
