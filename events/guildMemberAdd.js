@@ -36,12 +36,12 @@ exports.run = (async (client, member) => {
     } else {
       setTimeout(() => {
         verification.verify(client, member.user, verified_account);
+
+        const account_verified = member.guild.roles.get(config.pl_server.roles.verifiedID);
+
+        member.guild.channels.get('422149991482785812').send(`<@${member.user.id}> has joined and been given the <@&${account_verified.id}> role.`);
+        member.user.send(`Since you are already registered as ${verified_account}, you have been given the Account Verified role in ${member.guild.name}!`);  
       }, 1500);
     }
-
-    const account_verified = member.guild.roles.find('name', 'Account Verified');
-
-    member.guild.channels.get('422149991482785812').send(`<@${member.user.id}> has joined and been given the <@&${account_verified.id}> role.`);
-    member.user.send(`Since you are already registered as ${verified_account}, you have been given the Account Verified role in ${member.guild.name}!`);  
   }
 });
