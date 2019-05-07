@@ -34,7 +34,9 @@ exports.run = (async (client, member) => {
       verification.joined(client, member.user);
       return;
     } else {
-      verification.verify(client, member.user, verified_account);
+      setTimeout(() => {
+        verification.verify(client, member.user, verified_account);
+      }, 1500);
     }
 
     const account_verified = member.guild.roles.find('name', 'Account Verified');
