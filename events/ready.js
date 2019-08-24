@@ -11,9 +11,10 @@ exports.run = (async (client) => {
   if (client.deployed) {
     client.fetchUser(config.ownerID).then(owner => {
       const today = new Date(),
-            formatted_date = today.toLocaleString('en-US', config.date_options) + ', ' + today.toLocaleTimeString();
+            formatted_date = today.toLocaleString('en-US', config.date_options) + ', ' + today.toLocaleTimeString()
+            account = process.env.account ? ` by \`${process.env.account}@outlook.com\`` : '';
       
-      owner.send(`Successfully deployed on ${formatted_date} (UTC)`);
+      owner.send(`Successfully deployed${account} on ${formatted_date} (UTC)`);
     });
   }
 
