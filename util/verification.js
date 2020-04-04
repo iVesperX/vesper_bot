@@ -44,6 +44,11 @@ exports.setRoles = ((client, user, name, registration) => {
     });
 
     if (name) {
+      if (user.username == name) {
+        // handle logic for pb2 account == username
+        name = `${name}*`
+      }
+      
       pl_server_member.setNickname(name, reason).catch(err => {
         console.log(`Unable to set nickname ${name} to ${discord_tag}`);
       });
