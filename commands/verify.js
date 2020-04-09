@@ -12,7 +12,7 @@ const clone = (o => JSON.parse(JSON.stringify(o)));
 exports.run = (async (client, message, args) => {
   const player = args.join(' ');
   const discord_tag = message.author.tag;
-  const format =  `\`${config.prefix}verify {pb2_name}\``;
+  const format =  `\`${config.prefix}verify [pb2_login]\``;
 
   if (!args.length) {
     return message.channel.send('Specify a PB2 account to verify yourself as. __Example__: ' + format);
