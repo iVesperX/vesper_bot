@@ -9,7 +9,7 @@ try {
 
 const MongoClient = require('mongodb').MongoClient,
       login = process.env.pl_login ? process.env.pl_login : storage.pl_login,
-      url = `mongodb://${login}@ds018258.mlab.com:18258/pl_data`;
+      url = `mongodb+srv://${login}@pldata.lm95s.mongodb.net/pl_data?retryWrites=true&w=majority`;
 
 const fs = require('fs'),
       token = process.env.token ? process.env.token : storage.token;
