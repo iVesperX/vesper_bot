@@ -21,7 +21,7 @@ const collections = {
 exports.initialize = {
   invite: (async (client) => {
     const servID = config.pl_server.serverID;
-    const serv = client.guilds.get(servID);
+    const serv = client.guilds.fetch(servID);
     const invite = (await client.database.collection('pl_invite').findOne({})).data;
   
     let validInvite;

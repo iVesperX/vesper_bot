@@ -13,7 +13,7 @@ exports.register = ((client, user, name) => {
 });
 
 exports.setRoles = ((client, user, name, registration) => {
-  const pl_server = client.guilds.get(config.pl_server.serverID);
+  const pl_server = client.guilds.fetch(config.pl_server.serverID);
 
   if (!pl_server) return console.log('I am not in Plazma League server for some reason...');
 

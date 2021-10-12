@@ -1,5 +1,5 @@
-const Discord = require('discord.js'),
-      client = new Discord.Client({ autoReconnect: true });
+const { Client, Intents } = require('discord.js');
+const client = new Client({ intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES]});
 
 let storage = { pl_login: '', token: '' };
 
@@ -14,7 +14,7 @@ const MongoClient = require('mongodb').MongoClient,
 const fs = require('fs'),
       token = process.env.token ? process.env.token : storage.token;
 
-MongoClient.connect(url, { useNewUrlParser: true }, (err, database) => {
+MongoClient.connect(url, { useNewUrlParser: true, useUnifiedTopology: true }, (err, database) => {
   if (err) return console.log('Error connecting to database.');
   if (process.env && process.env.token) client.deployed = true;
 
@@ -22,10 +22,10 @@ MongoClient.connect(url, { useNewUrlParser: true }, (err, database) => {
 
   fs.readdir("./events/", (err, files) => {
     if (err) return console.error(err);
-  
+
     for (let i = 0; i < files.length; i++) {
       let event_file = require(`./events/${files[i]}`),
-          event = files[i].split('.')[0];
+        event = files[i].split('.')[0];
       client.on(event, (...args) => event_file.run(client, ...args));
     }
   });

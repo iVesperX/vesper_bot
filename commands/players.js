@@ -12,7 +12,7 @@ const roles = {
 exports.run = (async (client, message, args) => {
   const reset_flag = '-r';  
 
-  const pl_server = client.guilds.get('310995545588105217');
+  const pl_server = client.guilds.fetch('310995545588105217');
   const pl_name = pl_server.name;
   const pl_icon = pl_server.iconURL;
 
