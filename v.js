@@ -5,7 +5,10 @@ let storage = { pl_login: '', token: '' };
 
 try {
   storage = require('./storage/passwords.json');
-} catch (err) {}
+} catch (err) {
+  console.warn(err);
+  console.log('Leveraging process.env variables...');
+}
 
 const MongoClient = require('mongodb').MongoClient,
       login = process.env.pl_login ? process.env.pl_login : storage.pl_login,
