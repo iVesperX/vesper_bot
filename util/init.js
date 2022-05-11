@@ -1,4 +1,9 @@
-const config = require('../storage/config.json');
+// import { pl_server } from '../storage/config.json';
+import { createRequire } from 'module';
+
+const pseudoRequire = createRequire(import.meta.url);
+const config = pseudoRequire('../storage/config.json');
+
 
 // mLab collections
 const collections = {
@@ -18,7 +23,7 @@ const collections = {
   }
 };
 
-exports.initialize = {
+export const initialize = {
   invite: (async (client) => {
     const servID = config.pl_server.serverID;
     const serv = client.guilds.fetch(servID);

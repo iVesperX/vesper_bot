@@ -1,9 +1,13 @@
-const config = require('../storage/config.json');
+// import { ownerID } from '../storage/config.json';
+import { createRequire } from 'module';
 
-const JsonDB = require('node-json-db');
+const pseudoRequire = createRequire(import.meta.url);
+const config = pseudoRequire('../storage/config.json');
+
+import JsonDB from 'node-json-db';
 const db = new JsonDB('data', true);
 
-exports.run = (async (client, message, args) => {
+export const run = (async (client, message, args) => {
   if (message.author.id != config.ownerID) return;
   db.reload();
   const data = db.getData('/');

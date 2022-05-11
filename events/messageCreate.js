@@ -1,7 +1,21 @@
-﻿const config = require('../storage/config.json'),
-      prefix = process.env.prefix || config.prefix;
+﻿/*
+import {
+  commands,
+  ownerID,
+  accessIDs,
+  date_options,
+  bot_server,
+  prefix as config_prefix
+} from '../storage/config.json';
+*/
+import { createRequire } from 'module';
 
-exports.run = ((client, message) => {
+const pseudoRequire = createRequire(import.meta.url);
+const config = pseudoRequire('../storage/config.json');
+
+const prefix = process.env.prefix || config.prefix;
+
+export const run = ((client, message) => {
   const c = message.content;
   const args = c.split(' ');
   const command = args.shift().slice(prefix.length);
@@ -12,16 +26,12 @@ exports.run = ((client, message) => {
 
   const command_info = config.commands[command.toLowerCase()];
   
-  if (command_info) {
-    if (command_info.access != 0) {
-      let m = (command_info.access == 1) ? 'Owner' : 'Permssion';
-  
-      if (command_info.access == 1 && config.ownerID != message.author.id || command_info.access == 2 && !config.accessIDs.includes(message.author.id)) {
-        return message.channel.send(`The \`${command.toLowerCase()}\` command is only allowed at the **${m} Level**.`);
-      }
+  if (command_info && command_info.access != 0) {
+    let m = (command_info.access == 1) ? 'Owner' : 'Permssion';
+
+    if (command_info.access == 1 && config.ownerID != message.author.id || command_info.access == 2 && !config.accessIDs.includes(message.author.id)) {
+      return message.channel.send(`The \`${command.toLowerCase()}\` command is only allowed at the **${m} Level**.`);
     }
-  } else {
-    if (message.author.id != config.ownerID) return;
   }
 
   try {

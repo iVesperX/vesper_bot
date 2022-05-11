@@ -1,9 +1,12 @@
-const Discord = require('discord.js');
-const config = require('../storage/config.json');
+import { RichEmbed } from 'discord.js';
+// import { commands, prefix } from '../storage/config.json';
+import { createRequire } from 'module';
 
-exports.run = ((client, message, args) => {
+const pseudoRequire = createRequire(import.meta.url);
+const config = pseudoRequire('../storage/config.json');
+
+export const run = ((client, message, args) => {
   const command = args[0];
-  const commands = config.commands;
 
   const get_access_level = (a => {
     let level = '';
@@ -20,13 +23,13 @@ exports.run = ((client, message, args) => {
   if (command) {
     // help command for another
 
-    if (!commands[command]) return message.reply(`the command \`${command}\` cound not be resolved.`)
+    if (!config.commands[command]) return message.reply(`the command \`${command}\` cound not be resolved.`)
 
     let name = config.prefix + command,
-        access = commands[command].access,
-        description = commands[command].desc,
-        use = commands[command].usage.split('|'),
-        flags = commands[command].flags,
+        access = config.commands[command].access,
+        description = config.commands[command].desc,
+        use = config.commands[command].usage.split('|'),
+        flags = config.commands[command].flags,
         flag_information = '';
     
     use = use.map(c => `\`${config.prefix + c}\``).join(', ');
@@ -47,7 +50,7 @@ exports.run = ((client, message, args) => {
     const command_access = { user: [], permission: [], owner: [] };
     const role_color = (message.guild && !!message.guild.me.displayColor) ? message.guild.me.displayColor : 12172222;
 
-    const help_menu = new Discord.RichEmbed();
+    const help_menu = new RichEmbed();
 
     help_menu.setAuthor(`${client.user.username} Bot Help Menu`)
             .setDescription(`For information on a specific command, use ${config.prefix}help \`[command]\`.`)
@@ -56,8 +59,8 @@ exports.run = ((client, message, args) => {
             .setFooter(client.user.tag, client.user.avatarURL)
             .setTimestamp(new Date());
 
-    for (let i in commands) {
-      let access = commands[i].access,
+    for (let i in config.commands) {
+      let access = config.commands[i].access,
           access_level = '';
       
       if (i == 'default') continue;

@@ -1,5 +1,9 @@
-const config = require('../storage/config.json');
-const verification = require('../util/verification.js');
+// import { pl_server, bot_server, date_options } from '../storage/config.json';
+import { joined, verify } from '../util/verification.js';
+import { createRequire } from 'module';
+
+const pseudoRequire = createRequire(import.meta.url);
+const config = pseudoRequire('../storage/config.json');
 
 const devs = [
   '191333046786588672' // Vesper
@@ -12,7 +16,7 @@ const servers = [
   '372490159649718274'  // Art Editors
 ];
 
-exports.run = (async (client, member) => {
+export const run = (async (client, member) => {
   if (!servers.includes(member.guild.id)) return;
   // if (devs.includes(member.user.id)) return;
 
@@ -31,11 +35,11 @@ exports.run = (async (client, member) => {
     const verified_account = users[member.user.id] ? users[member.user.id][0] : null;
         
     if (!verified_account) {
-      verification.joined(client, member.user);
+      joined(client, member.user);
       return;
     } else {
       setTimeout(() => {
-        verification.verify(client, member.user, verified_account);
+        verify(client, member.user, verified_account);
 
         const account_verified = member.guild.roles.get(config.pl_server.roles.verifiedID);
 

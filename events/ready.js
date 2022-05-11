@@ -1,11 +1,14 @@
-const config = require('../storage/config.json');
+import { initialize } from '../util/init.js';
+// import { ownerID, date_options, prefix, name as _name } from '../storage/config.json';
+import { createRequire } from 'module';
+
+const pseudoRequire = createRequire(import.meta.url);
+const config = pseudoRequire('../storage/config.json');
 
 const maintenance = false;
 const precedent = maintenance ? '⛔ ' : '';
 
-const init = require('../util/init.js');
-
-exports.run = (async (client) => {
+export const run = (async (client) => {
   console.log('Vesper locked and loaded.');
 
   if (client.deployed) {
@@ -19,9 +22,9 @@ exports.run = (async (client) => {
   }
 
   let initialized = await client.database.collection('init').findOne({});
-  (!initialized || !initialized.data || initialized.data !== true) ? init.initialize.all(client) : console.log('Data has already been initialized.');
+  (!initialized || !initialized.data || initialized.data !== true) ? initialize.all(client) : console.log('Data has already been initialized.');
   
-  init.initialize.invite(client);
+  initialize.invite(client);
 
   // Game Presence Interval
   const total_users = client.guilds.cache.reduce((a, g) => a + g.memberCount, 0);

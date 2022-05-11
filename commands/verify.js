@@ -1,15 +1,19 @@
-const request = require('request');
-const config = require('../storage/config.json');
-const api_key = process.env.pb2_api_key || require('../storage/passwords.json').pb2_api_key; 
-const verification = require('../util/verification.js');
+import got from 'got';
+import { verify } from '../util/verification.js';
+// import { prefix, bot_server, date_options } from '../storage/config.json';
+import { createRequire } from 'module';
+
+const pseudoRequire = createRequire(import.meta.url);
+const config = pseudoRequire('../storage/config.json');
+
+const api_key = process.env.pb2_api_key || require('../storage/passwords.json').pb2_api_key;
 
 const pb2_api = 'http://plazmaburst2.com/extract.php?login=',
       api_key_string = '&api_key=' + api_key;
 
 const equals = ((value1, value2) => value1.toLowerCase() == value2.toLowerCase());
-const clone = (o => JSON.parse(JSON.stringify(o)));
 
-exports.run = (async (client, message, args) => {
+export const run = (async (client, message, args) => {
   const player = args.join(' ');
   const discord_tag = message.author.tag;
   const format =  `\`${config.prefix}verify [pb2_login]\``;
@@ -18,7 +22,7 @@ exports.run = (async (client, message, args) => {
     return message.channel.send('Specify a PB2 account to verify yourself as. __Example__: ' + format);
   }
 
-  const add_roles = (() => verification.verify(client, message.author, player));
+  const add_roles = (() => verify(client, message.author, player));
 
   const invalid_account = (() => {
     message.channel.send(`The account \`${player}\` is not a valid PB2 account. It may have been disabled or simply does not exist. Try verifying with another account.`)
@@ -41,10 +45,9 @@ exports.run = (async (client, message, args) => {
     const url = pb2_api + player + api_key_string;
 
     // not already in database
-    request.get(url, function(err, res, body) {
-      if (err) return console.log(err);
-      if (!res || res.statusCode != 200) return console.log('Invalid status/status code.');
-      const account = JSON.parse(body);
+    got(url).then(response => {
+      if (!response || response.statusCode != 200) return console.log('Invalid status/status code.');
+      const account = JSON.parse(response.body);
       const discord_field = account.icq;
 
       if (account.Error) {
@@ -75,6 +78,6 @@ exports.run = (async (client, message, args) => {
 
         message.reply(`you\'ve been successfully verified as \`${account.login}\`!`);
       }
-    });
+    }).catch(err, () => console.log(err));
   }
 });

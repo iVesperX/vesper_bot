@@ -1,6 +1,9 @@
-const request = require('request');
-const config = require('../storage/config.json');
-const verification = require('../util/verification.js');
+import { register } from '../util/verification.js';
+// import { prefix, db_placeholder, bot_server, date_options } from '../storage/config.json';
+import { createRequire } from 'module';
+
+const pseudoRequire = createRequire(import.meta.url);
+const config = pseudoRequire('../storage/config.json');
 
 const CODE = '```';
 const type = 'fix';
@@ -8,7 +11,7 @@ const type = 'fix';
 const equals = ((value1, value2) => value1.toLowerCase() == value2.toLowerCase());
 const clone = (o => JSON.parse(JSON.stringify(o)));
 
-exports.run = (async (client, message, args) => {
+export const run = (async (client, message, args) => {
   const account = args.join(' ');
   const discord_tag = message.author.tag;
   const format =  `\`${config.prefix}register {account_name}\``;
@@ -22,7 +25,7 @@ exports.run = (async (client, message, args) => {
     return message.channel.send('Specify a PB2 account to register for PL.\n\n__Example__: ' + format);
   }
 
-  const add_roles = (() => verification.register(client, message.author, account));
+  const add_roles = (() => register(client, message.author, account));
 
   // where the magic happens
   const players = (await client.database.collection('players').findOne({})).data;

@@ -1,6 +1,10 @@
-const config = require('../storage/config.json');
+// import { ownerID } from '../storage/config.json';
+import { createRequire } from 'module';
 
-exports.run = ((client, message, args) => {
+const pseudoRequire = createRequire(import.meta.url);
+const config = pseudoRequire('../storage/config.json');
+
+export const run = ((client, message, args) => {
   if (message.author.id != config.ownerID) return;
 
   if (!args.length) return message.channel.send('Specify a role name in this server.');

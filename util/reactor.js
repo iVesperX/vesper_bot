@@ -1,4 +1,4 @@
-exports.success = ((message, positive_output, callback) => {
+export const success = ((message, positive_output, callback) => {
   message.react('✅').then(() => {
     if (callback) callback();
   }).catch(err => {
@@ -8,7 +8,7 @@ exports.success = ((message, positive_output, callback) => {
   });
 });
 
-exports.failure = ((message, negative_output, callback) => {
+export const failure = ((message, negative_output, callback) => {
   message.react('❌').then(() => {
     if (callback) callback();
   }).catch(err => {

@@ -1,10 +1,14 @@
-const reactor = require('../util/reactor.js');
-const config = require('../storage/config.json');
+import { success } from '../util/reactor.js';
+// import { ownerID } from '../storage/config.json';
+import { createRequire } from 'module';
 
-exports.run = ((client, message, args) => {
+const pseudoRequire = createRequire(import.meta.url);
+const config = pseudoRequire('../storage/config.json');
+
+export const run = ((client, message, args) => {
   if (message.author.id != config.ownerID) return;
 
-  reactor.success(message, 'Connection terminated.', function() {
+  success(message, 'Connection terminated.', function() {
       client.destroy();
     });
 });

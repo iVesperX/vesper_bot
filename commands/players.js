@@ -1,7 +1,10 @@
-const Discord = require('discord.js');
-const config = require('../storage/config.json');
+import { RichEmbed } from 'discord.js';
+import { initialize } from '../util/init.js';
+// import { accessIDs } from '../storage/config.json';
+import { createRequire } from 'module';
 
-const init = require('../util/init.js');
+const pseudoRequire = createRequire(import.meta.url);
+const config = pseudoRequire('../storage/config.json');
 
 const roles = {
   players: '417462892087214081',
@@ -9,7 +12,7 @@ const roles = {
   spectators: '319613891208282112'
 };
 
-exports.run = (async (client, message, args) => {
+export const run = (async (client, message, args) => {
   const reset_flag = '-r';  
 
   const pl_server = client.guilds.fetch('310995545588105217');
@@ -34,7 +37,7 @@ exports.run = (async (client, message, args) => {
 
       collector.on('collect', m => {
         if (m.content == 'YES') {
-          init.initialize.all(client);
+          initialize.all(client);
           message.channel.send('All players successfully cleared.');          
           collector.stop();
         } else if (m.content == 'NO') {
@@ -49,7 +52,7 @@ exports.run = (async (client, message, args) => {
     });
   } else {
     if (!pl_server) return;
-    const players_list = new Discord.RichEmbed();
+    const players_list = new RichEmbed();
     const collections = [players, users];
     
     players_list.setAuthor(pl_name, pl_icon, inv)

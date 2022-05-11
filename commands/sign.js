@@ -1,9 +1,13 @@
-const config = require('../storage/config.json');
+// import { prefix } from '../storage/config.json';
+import { createRequire } from 'module';
+
+const pseudoRequire = createRequire(import.meta.url);
+const config = pseudoRequire('../storage/config.json');
 
 const equals = ((value1, value2) => value1.toLowerCase() == value2.toLowerCase());
 const clone = (o => JSON.parse(JSON.stringify(o)));
 
-exports.run = ((client, message, args) => {
+export const run = ((client, message, args) => {
   const player_to_sign = args.join(' ');
   const format = `${config.prefix}sign {player}`;
 

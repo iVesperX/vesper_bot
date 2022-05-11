@@ -1,6 +1,10 @@
-const config = require('../storage/config.json');
+// import { ownerID } from '../storage/config.json';
+import { createRequire } from 'module';
 
-exports.run = (async (client, message, args) => {
+const pseudoRequire = createRequire(import.meta.url);
+const config = pseudoRequire('../storage/config.json');
+
+export const run = (async (client, message, args) => {
   if (message.author.id != config.ownerID) return;
   
   const init = (await client.database.collection('init').findOne({})).data;

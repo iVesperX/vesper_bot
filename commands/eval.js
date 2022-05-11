@@ -1,9 +1,13 @@
-const reactor = require('../util/reactor.js');
-const config = require('../storage/config.json');
+import { success, failure } from '../util/reactor.js';
+// import { ownerID } from '../storage/config.json';
+import { createRequire } from 'module';
+
+const pseudoRequire = createRequire(import.meta.url);
+const config = pseudoRequire('../storage/config.json');
 
 const code = '```';
 
-exports.run = ((client, message, args) => {
+export const run = ((client, message, args) => {
   if (message.author.id != config.ownerID) return;
 
   const send_param = (args[0] == '-s');
@@ -15,12 +19,12 @@ exports.run = ((client, message, args) => {
       const r = eval(task);
 
       message.channel.send(code + 'js\n' + (r ? r : 'undefined') + code).then(() => {
-        reactor.success(message, 'Message string evaluated successfully.');
+        success(message, 'Message string evaluated successfully.');
       }).catch(err => {
         console.log(err);
       });
     } catch(err) {
-      reactor.failure(message, 'Error thrown trying to evaluate your message.');
+      failure(message, 'Error thrown trying to evaluate your message.');
 
       console.log(err);
     }
@@ -29,9 +33,9 @@ exports.run = ((client, message, args) => {
 
     try {
       eval(task);
-      reactor.success(message, 'Message string evaluated successfully.')
+      success(message, 'Message string evaluated successfully.')
     } catch (err) {
-      reactor.failure(message, 'Error thrown trying to evaluate your message.');
+      failure(message, 'Error thrown trying to evaluate your message.');
 
       console.log(err);
     }

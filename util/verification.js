@@ -1,30 +1,34 @@
-const config = require('../storage/config.json');
+// import { pl_server } from '../storage/config.json';
+import { createRequire } from 'module';
 
-exports.joined = ((client, user) => {
-  exports.setRoles(client, user, null, false);
+const pseudoRequire = createRequire(import.meta.url);
+const config = pseudoRequire('../storage/config.json');
+
+export const joined = ((client, user) => {
+  setRoles(client, user, null, false);
 });
 
-exports.verify = ((client, user, name) => {
-  exports.setRoles(client, user, name, false);
+export const verify = ((client, user, name) => {
+  setRoles(client, user, name, false);
 });
 
-exports.register = ((client, user, name) => {
-  exports.setRoles(client, user, name, true);
+export const register = ((client, user, name) => {
+  setRoles(client, user, name, true);
 });
 
-exports.setRoles = ((client, user, name, registration) => {
-  const pl_server = client.guilds.fetch(config.pl_server.serverID);
+export const setRoles = ((client, user, name, registration) => {
+  const pl_server_exists = client.guilds.fetch(config.pl_server.serverID);
 
-  if (!pl_server) return console.log('I am not in Plazma League server for some reason...');
+  if (!pl_server_exists) return console.log('I am not in Plazma League server for some reason...');
 
-  const client_in_PL = pl_server.me;
+  const client_in_PL = pl_server_exists.me;
   const registered_ID = config.pl_server.roles.registeredID;
   const verified_ID = config.pl_server.roles.verifiedID;
   const spectators_ID = config.pl_server.roles.spectatorsID;
   
   const discord_tag = user.tag;
 
-  pl_server.fetchMember(user.id).then(member => {
+  pl_server_exists.fetchMember(user.id).then(member => {
     // fetches user
     const pl_server_member = member;
 
@@ -39,7 +43,7 @@ exports.setRoles = ((client, user, name, registration) => {
   
     // performs actions
     pl_server_member.addRole(role_to_add).catch(err => {
-      const actual_role = pl_server.roles.get(role_to_add);
+      const actual_role = pl_server_exists.roles.get(role_to_add);
       console.log(`Unable to add "${actual_role && actual_role.name}" role to ${discord_tag}`);
     });
 
@@ -57,7 +61,7 @@ exports.setRoles = ((client, user, name, registration) => {
     if (registration) return; // returns if registering
   
     pl_server_member.removeRole(role_to_remove).catch(err => {
-      const actual_role = pl_server.roles.get(role_to_remove);
+      const actual_role = pl_server_exists.roles.get(role_to_remove);
       console.log(`Unable to remove "${actual_role && actual_role.name}" role from ${discord_tag}`)
     });
 

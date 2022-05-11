@@ -1,9 +1,13 @@
-const config = require('../storage/config.json');
+// import { prefix, accessIDs } from '../storage/config.json';
+import { createRequire } from 'module';
+
+const pseudoRequire = createRequire(import.meta.url);
+const config = pseudoRequire('../storage/config.json');
 
 const equals = ((value1, value2) => value1.toLowerCase() == value2.toLowerCase());
 const clone = (o => JSON.parse(JSON.stringify(o)));
 
-exports.run = (async (client, message, args) => {
+export const run = (async (client, message, args) => {
   const manager_flag = '-m';
   const manager_modifier = args.indexOf(manager_flag);
   const format =  `\`${config.prefix}addteam {name} ${manager_flag} {manager}\``;

@@ -1,15 +1,18 @@
-const fs = require('fs');
-const config = require('../storage/config.json');
+import * as fs from 'fs';
+import { success } from '../util/reactor.js';
+// import { ownerID } from '../storage/config.json';
+import { createRequire } from 'module';
 
-const reactor = require('../util/reactor.js');
+const pseudoRequire = createRequire(import.meta.url);
+const config = pseudoRequire('../storage/config.json');
 
-const JsonDB = require('node-json-db');
+import JsonDB from 'node-json-db';
 const db = new JsonDB('data', true);
 
 const CODE = '```';
 const max_text_length = 2000;
 
-exports.run = ((client, message, args) => {
+export const run = ((client, message, args) => {
   if (message.author.id != config.ownerID) return;
 
   const parse_and_send = (async (user, text) => {
@@ -20,7 +23,7 @@ exports.run = ((client, message, args) => {
   });
 
   const callback = () => {
-    reactor.success(message, 'Succesfully returned database information');
+    success(message, 'Succesfully returned database information');
   };
 
   fs.readFile('data.json', (err, data) => {
@@ -37,18 +40,14 @@ exports.run = ((client, message, args) => {
         case '-teams':
           response = `${CODE}json\n${JSON.stringify(parsed_data.teams) + CODE}`;
           return user.send(response).then(callback);
-          break;
         case '-players':
           response = `${CODE}json\n${JSON.stringify(parsed_data.players) + CODE}`;
           return user.send(response).then(callback);
-          break;
         case '-verified':
           response = `${CODE}json\n${JSON.stringify(parsed_data.verified) + CODE}`;
           return  user.send(response).then(callback);
-          break;
         default:
           return user.send(`${CODE}json\n${data + CODE}`).then(callback);
-          break;
       }
     });
   });
