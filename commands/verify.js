@@ -73,7 +73,8 @@ export const run = (async (client, message, args) => {
           const formatted_date = today.toLocaleString('en-US', config.date_options) + ', ' + today.toLocaleTimeString();
           const ver_message = `${message.author.tag} (<@${message.author.id}>) has verified as \`${account.login}\` (on ${formatted_date})`;
 
-          client.guilds.fetch(config.bot_server.id).channels.get(config.bot_server.mod.pl_verification).send(ver_message);
+          const bot_server = await client.guilds.fetch(config.bot_server.id);
+          bot_server.available && bot_server.channels.fetch(config.bot_server.mod.pl_verification).send(ver_message);
         }
 
         message.reply(`you\'ve been successfully verified as \`${account.login}\`!`);

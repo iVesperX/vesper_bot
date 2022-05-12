@@ -16,7 +16,7 @@ export const run = (async (client, message, args) => {
   const discord_tag = message.author.tag;
   const format =  `\`${config.prefix}register {account_name}\``;
   
-  const pl_server_member = client.guilds.fetch('310995545588105217').members.get(message.author.id);
+  const pl_server_member = client.guilds.fetch('310995545588105217').members.fetch(message.author.id);
   const inv = (await client.database.collection('pl_invite').findOne({})).data;
 
   if (!pl_server_member) return message.reply(`You are currently not in Plazma League Discord! You may only register if you are verified in the chat. PL Discord chat is public and open to everyone.\n\nInvitation link: ${inv ? inv : '-'}`)
@@ -80,7 +80,7 @@ export const run = (async (client, message, args) => {
           const formatted_date = today.toLocaleString('en-US', config.date_options) + ', ' + today.toLocaleTimeString();
           const reg_message = `${message.author.tag} (<@${message.author.id}>) has registered as \`${account}\` (on ${formatted_date})`;
 
-          client.guilds.fetch(config.bot_server.id).channels.get(config.bot_server.mod.pl_registration).send(reg_message);
+          client.guilds.fetch(config.bot_server.id).channels.fetch(config.bot_server.mod.pl_registration).send(reg_message);
         }
 
         message.reply(`you\'ve been successfully registered as \`${account}\`!`);

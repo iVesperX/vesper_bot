@@ -25,7 +25,7 @@ export const run = (async (client, member) => {
   const join_message = `<@${member.user.id}> has joined \`${member.guild.name}\` (on ${formatted_date})`;
 
   if (config.bot_server) {
-    client.guilds.fetch(config.bot_server.id).channels.get(config.bot_server.mod.servers).send(join_message);
+    client.guilds.fetch(config.bot_server.id).channels.fetch(config.bot_server.mod.servers).send(join_message);
   }
 
   // PL Server
@@ -41,9 +41,9 @@ export const run = (async (client, member) => {
       setTimeout(() => {
         verify(client, member.user, verified_account);
 
-        const account_verified = member.guild.roles.get(config.pl_server.roles.verifiedID);
+        const account_verified = member.guild.roles.fetch(config.pl_server.roles.verifiedID);
 
-        member.guild.channels.get('422149991482785812').send(`<@${member.user.id}> has joined and been given the <@&${account_verified.id}> role.`);
+        member.guild.channels.fetch('422149991482785812').send(`<@${member.user.id}> has joined and been given the <@&${account_verified.id}> role.`);
         member.user.send(`Since you are already registered as ${verified_account}, you have been given the Account Verified role in ${member.guild.name}!`);  
       }, 1500);
     }
