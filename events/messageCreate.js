@@ -15,7 +15,7 @@ const config = pseudoRequire('../storage/config.json');
 
 const prefix = process.env.prefix || config.prefix;
 
-export const run = ((client, message) => {
+export const run = (async (client, message) => {
   const c = message.content;
   const args = c.split(' ');
   const command = args.shift().slice(prefix.length);
@@ -36,8 +36,8 @@ export const run = ((client, message) => {
 
   try {
     if (maintenance) return message.channel.send('Bot is down currently for maintenance.');
-    let command_file = pseudoRequire(command_path);
-    command_file.run(client, message, args);
+    let command_module = await import(command_path);
+    command_module.run(client, message, args);
     
     if (message.channel.type == 'dm' && message.author.id != config.ownerID) {
       const today = new Date();
