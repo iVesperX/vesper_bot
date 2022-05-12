@@ -16,8 +16,8 @@ export const register = ((client, user, name) => {
   setRoles(client, user, name, true);
 });
 
-export const setRoles = ((client, user, name, registration) => {
-  const pl_guild = client.guilds.fetch(config.pl_server.serverID);
+export const setRoles = (async (client, user, name, registration) => {
+  const pl_guild = await client.guilds.fetch(config.pl_server.serverID);
 
   if (!pl_guild) return console.log('I am not in Plazma League server for some reason...');
 
