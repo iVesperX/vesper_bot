@@ -36,7 +36,7 @@ export const run = ((client, message) => {
 
   try {
     if (maintenance) return message.channel.send('Bot is down currently for maintenance.');
-    let command_file = require(command_path);
+    let command_file = pseudoRequire(command_path);
     command_file.run(client, message, args);
     
     if (message.channel.type == 'dm' && message.author.id != config.ownerID) {
