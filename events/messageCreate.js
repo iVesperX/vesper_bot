@@ -36,7 +36,7 @@ export const run = (async (client, message) => {
 
   try {
     if (maintenance) return message.channel.send('Bot is down currently for maintenance.');
-    let command_module = await import(command_path);
+    let command_module = await import(`${command_path}?version=${Date.now()}`);
     command_module.run(client, message, args);
     
     if (message.channel.type == 'dm' && message.author.id != config.ownerID) {

@@ -4,9 +4,11 @@ import MongoClient from 'mongodb';
 import * as fs from 'fs';
 import { createRequire } from 'module';
 
+let storage = {};
+
 try {
   const pseudoRequire = createRequire(import.meta.url);
-  const storage = pseudoRequire('./storage/passwords.json');
+  storage = pseudoRequire('./storage/passwords.json');
 } catch (err) {
   console.log('Leveraging process.env variables...');
 }

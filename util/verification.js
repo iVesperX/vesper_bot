@@ -17,18 +17,18 @@ export const register = ((client, user, name) => {
 });
 
 export const setRoles = ((client, user, name, registration) => {
-  const pl_server_exists = client.guilds.fetch(config.pl_server.serverID);
+  const pl_guild = client.guilds.fetch(config.pl_server.serverID);
 
-  if (!pl_server_exists) return console.log('I am not in Plazma League server for some reason...');
+  if (!pl_guild) return console.log('I am not in Plazma League server for some reason...');
 
-  const client_in_PL = pl_server_exists.me;
+  const client_in_PL = pl_guild.me;
   const registered_ID = config.pl_server.roles.registeredID;
   const verified_ID = config.pl_server.roles.verifiedID;
   const spectators_ID = config.pl_server.roles.spectatorsID;
   
   const discord_tag = user.tag;
 
-  pl_server_exists.fetchMember(user.id).then(member => {
+  pl_guild.members.fetch(user.id).then(member => {
     // fetches user
     const pl_server_member = member;
 
@@ -43,7 +43,7 @@ export const setRoles = ((client, user, name, registration) => {
   
     // performs actions
     pl_server_member.addRole(role_to_add).catch(err => {
-      const actual_role = pl_server_exists.roles.get(role_to_add);
+      const actual_role = pl_guild.roles.get(role_to_add);
       console.log(`Unable to add "${actual_role && actual_role.name}" role to ${discord_tag}`);
     });
 
@@ -61,7 +61,7 @@ export const setRoles = ((client, user, name, registration) => {
     if (registration) return; // returns if registering
   
     pl_server_member.removeRole(role_to_remove).catch(err => {
-      const actual_role = pl_server_exists.roles.get(role_to_remove);
+      const actual_role = pl_guild.roles.get(role_to_remove);
       console.log(`Unable to remove "${actual_role && actual_role.name}" role from ${discord_tag}`)
     });
 

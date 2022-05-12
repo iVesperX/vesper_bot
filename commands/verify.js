@@ -6,7 +6,7 @@ import { createRequire } from 'module';
 const pseudoRequire = createRequire(import.meta.url);
 const config = pseudoRequire('../storage/config.json');
 
-const api_key = process.env.pb2_api_key || require('../storage/passwords.json').pb2_api_key;
+const api_key = process.env.pb2_api_key || pseudoRequire('../storage/passwords.json').pb2_api_key;
 
 const pb2_api = 'http://plazmaburst2.com/extract.php?login=',
       api_key_string = '&api_key=' + api_key;
