@@ -78,6 +78,6 @@ export const run = (async (client, message, args) => {
 
         message.reply(`you\'ve been successfully verified as \`${account.login}\`!`);
       }
-    }).catch(err, () => console.log(err));
+    }).catch(err => console.log(err));
   }
 });
