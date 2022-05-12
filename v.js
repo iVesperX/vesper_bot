@@ -4,16 +4,22 @@ import MongoClient from 'mongodb';
 import * as fs from 'fs';
 import { createRequire } from 'module';
 
-const pseudoRequire = createRequire(import.meta.url);
-const storage = pseudoRequire('./storage/passwords.json');
+try {
+  const pseudoRequire = createRequire(import.meta.url);
+  const storage = pseudoRequire('./storage/passwords.json');
+} catch (err) {
+  console.log('Leveraging process.env variables...');
+}
 
 const client = new Client({ intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES]});
 
 console.log(`Discord Version: ${Constants.Package.version}`);
 
+/*
 if (!storage || !storage.pl_login || !storage.token) {
   console.log('Leveraging process.env variables...');
 }
+*/
 
 const mongo_login = process.env.pl_login ? process.env.pl_login : storage.pl_login;
 const url = `mongodb+srv://${mongo_login}@pldata.lm95s.mongodb.net/pl_data?retryWrites=true&w=majority`;
