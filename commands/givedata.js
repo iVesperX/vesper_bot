@@ -6,13 +6,10 @@ import { createRequire } from 'module';
 const pseudoRequire = createRequire(import.meta.url);
 const config = pseudoRequire('../storage/config.json');
 
-import JsonDB from 'node-json-db';
-const db = new JsonDB('data', true);
-
 const CODE = '```';
 const max_text_length = 2000;
 
-export const run = ((client, message, args) => {
+export const run = (async (client, message, args) => {
   if (message.author.id != config.ownerID) return;
 
   const parse_and_send = (async (user, text) => {
@@ -22,33 +19,30 @@ export const run = ((client, message, args) => {
     }
   });
 
-  const callback = () => {
-    success(message, 'Succesfully returned database information');
-  };
+  const callback = () => success(message, 'Succesfully returned database information');
 
-  fs.readFile('data.json', (err, data) => {
-    client.fetchUser(config.ownerID).then(user => {
-      let parsed_data = JSON.parse(data),
-          response = '';
-      if (!args.length) {
-        response = `${CODE}json\n${data + CODE}`;
-        return parse_and_send(user, response);
-        // return user.send(response).then(callback);
-      }
+  client.fetchUser(config.ownerID).then(user => {
+    let data = "{}";
+    let parsed_data = JSON.parse(data),
+        response = '';
+    if (!args.length) {
+      response = `${CODE}json\n${data + CODE}`;
+      return parse_and_send(user, response);
+      // return user.send(response).then(callback);
+    }
 
-      switch (args[0]) {
-        case '-teams':
-          response = `${CODE}json\n${JSON.stringify(parsed_data.teams) + CODE}`;
-          return user.send(response).then(callback);
-        case '-players':
-          response = `${CODE}json\n${JSON.stringify(parsed_data.players) + CODE}`;
-          return user.send(response).then(callback);
-        case '-verified':
-          response = `${CODE}json\n${JSON.stringify(parsed_data.verified) + CODE}`;
-          return  user.send(response).then(callback);
-        default:
-          return user.send(`${CODE}json\n${data + CODE}`).then(callback);
-      }
-    });
+    switch (args[0]) {
+      case '-teams':
+        response = `${CODE}json\n${JSON.stringify(parsed_data.teams) + CODE}`;
+        return user.send(response).then(callback);
+      case '-players':
+        response = `${CODE}json\n${JSON.stringify(parsed_data.players) + CODE}`;
+        return user.send(response).then(callback);
+      case '-verified':
+        response = `${CODE}json\n${JSON.stringify(parsed_data.verified) + CODE}`;
+        return  user.send(response).then(callback);
+      default:
+        return user.send(`${CODE}json\n${data + CODE}`).then(callback);
+    }
   });
 });

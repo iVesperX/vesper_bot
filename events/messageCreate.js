@@ -22,7 +22,7 @@ export const run = (async (client, message) => {
   const command_path = `../commands/${command}.js`;
   const maintenance = /⛔/i.test(client.user.username);
   
-  if (c.indexOf(prefix) !== 0 || message.author.bot) return;
+  if (c.indexOf(prefix) !== 0 || !command || message.author.bot) return;
 
   const command_info = config.commands[command.toLowerCase()];
   

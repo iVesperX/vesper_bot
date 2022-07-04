@@ -12,13 +12,13 @@ export const run = (async (client) => {
   console.log('Vesper locked and loaded.');
 
   if (client.deployed) {
-    client.users.fetch(config.ownerID).then(owner => {
-      const today = new Date(),
-            formatted_date = today.toLocaleString('en-US', config.date_options) + ', ' + today.toLocaleTimeString(),
-            account = process.env.account ? ` by \`${process.env.account}@outlook.com\`` : '';
-      
-      owner.send(`Successfully deployed${account} on ${formatted_date} (UTC)`);
-    });
+    const today = new Date();
+    const formatted_date = today.toLocaleString('en-US', config.date_options) + ', ' + today.toLocaleTimeString();
+    const account = process.env.account ? ` by \`${process.env.account}@outlook.com\`` : '';
+
+    if (config.bot_server) {
+      client.channels.fetch(config.bot_server.mod.dms).send(`Successfully deployed${account} on ${formatted_date} (UTC)`);
+    }
   }
 
   let initialized = await client.database.collection('init').findOne({});
