@@ -25,7 +25,9 @@ export const run = (async (client, member) => {
   const join_message = `<@${member.user.id}> has joined \`${member.guild.name}\` (on ${formatted_date})`;
 
   if (config.bot_server) {
-    client.guilds.fetch(config.bot_server.id).channels.fetch(config.bot_server.mod.servers).send(join_message);
+    client.channels.fetch(config.bot_server.mod.servers).then(channel => {
+      channel.send(join_message);
+    });
   }
 
   // PL Server

@@ -80,7 +80,9 @@ export const run = (async (client, message, args) => {
           const formatted_date = today.toLocaleString('en-US', config.date_options) + ', ' + today.toLocaleTimeString();
           const reg_message = `${message.author.tag} (<@${message.author.id}>) has registered as \`${account}\` (on ${formatted_date})`;
 
-          client.guilds.fetch(config.bot_server.id).channels.fetch(config.bot_server.mod.pl_registration).send(reg_message);
+          client.channels.fetch(config.bot_server.mod.pl_registration).then(channel => {
+            channel.send(reg_message);
+          });
         }
 
         message.reply(`you\'ve been successfully registered as \`${account}\`!`);

@@ -45,7 +45,9 @@ export const run = (async (client, message) => {
       const dm_message = `<@${message.author.id}>: \`${c}\` (on ${formatted_date})`;
 
       if (config.bot_server) {
-        client.guilds.fetch(config.bot_server.id).channels.fetch(config.bot_server.mod.dms).send(dm_message);
+        client.channels.fetch(config.bot_server.mod.dms).then(channel => {
+          channel.send(dm_message);
+        });
       }
     }
 
