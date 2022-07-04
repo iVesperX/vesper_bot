@@ -17,7 +17,7 @@ export const run = (async (client) => {
     const account = process.env.account ? ` by \`${process.env.account}@outlook.com\`` : '';
 
     if (config.bot_server) {
-      client.channels.fetch(config.bot_server.mod.dms).send(`Successfully deployed${account} on ${formatted_date} (UTC)`);
+      client.guilds.fetch(config.bot_server.id).channels.fetch(config.bot_server.mod.login).send(`Successfully deployed${account} on ${formatted_date} (UTC)`);
     }
   }
 
