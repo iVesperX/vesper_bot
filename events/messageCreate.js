@@ -39,7 +39,7 @@ export const run = (async (client, message) => {
     let command_module = await import(`${command_path}?version=${Date.now()}`);
     command_module.run(client, message, args);
     
-    if (message.channel.type == 'dm' && message.author.id != config.ownerID) {
+    if (message.channel.type == 'DM' && message.author.id != config.ownerID) {
       const today = new Date();
       const formatted_date = today.toLocaleString('en-US', config.date_options) + ', ' + today.toLocaleTimeString();
       const dm_message = `<@${message.author.id}>: \`${c}\` (on ${formatted_date})`;
