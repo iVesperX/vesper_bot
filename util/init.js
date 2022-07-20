@@ -26,7 +26,7 @@ const collections = {
 export const initialize = {
   invite: (async (client) => {
     const servID = config.pl_server.serverID;
-    const serv = client.guilds.fetch(servID);
+    const serv = await client.guilds.fetch(servID);
     const invite = (await client.database.collection('pl_invite').findOne({})).data;
   
     let validInvite;
@@ -35,7 +35,6 @@ export const initialize = {
     
     if (serv && !validInvite) {
       console.log('Generating new invite link...');
-      console.log(serv);
   
       const channel = serv.invites.first(); // deprecated: serv.defaultChannel;
   
