@@ -43,6 +43,7 @@ export const initialize = {
       }
 
       console.log('Generating new invite link...');
+      console.log(verificationChannel);
   
       verificationChannel.createInvite({ maxAge: 0, unique: true }, 'PL Permanent Invitation Link').then(invite => {
         const inviteURL = `https://discordapp.com/invite/${invite.code}`;
