@@ -34,7 +34,8 @@ export const initialize = {
     try { validInvite = await client.fetchInvite(invite) } catch (err) {}
     
     if (serv && !validInvite) {
-      console.log('Generating new invite link...')
+      console.log('Generating new invite link...');
+      console.log(serv);
   
       const channel = serv.invites.first(); // deprecated: serv.defaultChannel;
   
