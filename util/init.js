@@ -35,9 +35,10 @@ export const initialize = {
     try { validInvite = await client.fetchInvite(invite) } catch (err) {}
     
     if (serv && !validInvite) {
+      const verificationChannel = await serv.channels.fetch(config.pl_server.verification);
+
       /* requires MANAGE_SERVER permission flag
 
-      const verificationChannel = await serv.channels.fetch(config.pl_server.verification);
       const verificationInvite = (await verificationChannel.fetchInvites()).first();
 
       if (verificationInvite) {
