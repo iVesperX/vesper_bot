@@ -35,6 +35,7 @@ export const initialize = {
     
     if (serv && !validInvite) {
       const verificationChannel = await serv.channels.fetch(config.pl_server.verification);
+      console.log(verificationChannel);
       const verificationInvite = (await verificationChannel.fetchInvites()).first();
 
       if (verificationInvite) {
@@ -43,7 +44,6 @@ export const initialize = {
       }
 
       console.log('Generating new invite link...');
-      console.log(verificationChannel);
   
       verificationChannel.createInvite({ maxAge: 0, unique: true }, 'PL Permanent Invitation Link').then(invite => {
         const inviteURL = `https://discordapp.com/invite/${invite.code}`;
