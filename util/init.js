@@ -35,14 +35,16 @@ export const initialize = {
     try { validInvite = await client.fetchInvite(invite) } catch (err) {}
     
     if (serv && !validInvite) {
+      /* requires MANAGE_SERVER permission flag
+
       const verificationChannel = await serv.channels.fetch(config.pl_server.verification);
-      console.log(new Permissions(serv.me.permissionsIn(verificationChannel).bitfield).toArray());
       const verificationInvite = (await verificationChannel.fetchInvites()).first();
 
       if (verificationInvite) {
         console.log(`Leveraging existing verification invite: https://discordapp.com/invite/${verificationInvite.code}`)
         return;
       }
+      */
 
       console.log('Generating new invite link...');
   
