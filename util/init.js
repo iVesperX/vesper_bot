@@ -35,8 +35,9 @@ export const initialize = {
     
     if (serv && !validInvite) {
       const verificationChannel = await serv.channels.fetch(config.pl_server.verification);
-      console.log(verificationChannel);
       const verificationInvite = (await verificationChannel.fetchInvites()).first();
+
+      console.log(serv.me.permissionsIn(verificationChannel));
 
       if (verificationInvite) {
         console.log(`Leveraging existing verification invite: https://discordapp.com/invite/${verificationInvite.code}`)
