@@ -34,18 +34,24 @@ export const initialize = {
     try { validInvite = await client.fetchInvite(invite) } catch (err) {}
     
     if (serv && !validInvite) {
+      const verificationChannel = await serv.channels.fetch(config.pl_server.verification);
+      const verificationInvite = (await verificationChannel.fetchInvites()).first();
+
+      if (verificationInvite) {
+        console.log(`Leveraging existing verification invite: https://discordapp.com/invite/${verificationInvite.code}`)
+        return;
+      }
+
       console.log('Generating new invite link...');
   
-      const channel = serv.invites.cache.first(); // deprecated: serv.defaultChannel;
-  
-      channel.createInvite({ maxAge: 0, unique: true }, 'PL Permanent Invitation Link').then(invite => {
+      verificationChannel.createInvite({ maxAge: 0, unique: true }, 'PL Permanent Invitation Link').then(invite => {
         const inviteURL = `https://discordapp.com/invite/${invite.code}`;
         
         client.database.collection('pl_invite').updateOne({}, { $set: { 'data': inviteURL } });
   
-        console.log(`Successfully generated invitation link for #${channel.name} in ${serv.name}`)
+        console.log(`Successfully generated invitation link for #${verificationChannel.name} in ${serv.name}`)
       }).catch(err => {
-        console.log(`Failed to generate invitation link for #${channel.name}.\n${err}`);
+        console.log(`Failed to generate invitation link for #${verificationChannel.name}.\n${err}`);
       });
     } else {
       console.log(`${validInvite.url} is a valid invitation link.`);
