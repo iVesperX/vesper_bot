@@ -36,7 +36,7 @@ export const initialize = {
     if (serv && !validInvite) {
       console.log('Generating new invite link...');
   
-      const channel = serv.invites.first(); // deprecated: serv.defaultChannel;
+      const channel = serv.invites.cache.first(); // deprecated: serv.defaultChannel;
   
       channel.createInvite({ maxAge: 0, unique: true }, 'PL Permanent Invitation Link').then(invite => {
         const inviteURL = `https://discordapp.com/invite/${invite.code}`;
