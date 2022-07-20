@@ -1,5 +1,6 @@
 // import { pl_server } from '../storage/config.json';
 import { createRequire } from 'module';
+import { Permissions } from 'discord.js';
 
 const pseudoRequire = createRequire(import.meta.url);
 const config = pseudoRequire('../storage/config.json');
@@ -35,7 +36,7 @@ export const initialize = {
     
     if (serv && !validInvite) {
       const verificationChannel = await serv.channels.fetch(config.pl_server.verification);
-      console.log(serv.me.permissionsIn(verificationChannel));
+      console.log(new Permissions(serv.me.permissionsIn(verificationChannel).bitfield).toArray());
       const verificationInvite = (await verificationChannel.fetchInvites()).first();
 
       if (verificationInvite) {
