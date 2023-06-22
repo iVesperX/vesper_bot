@@ -12,8 +12,6 @@
   "license": "ISC",
   "dependencies": {
     "discord.js": "^13.16.0",
-    "got": "^12.6.1",
-    "mongodb": "^3.1.0-beta4",
-    "node": "v16.10.0"
+    "mongodb": "^3.1.0-beta4"
   }
 }

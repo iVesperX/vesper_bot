@@ -1,4 +1,3 @@
-import got from 'got';
 import { verify } from '../util/verification.js';
 // import { prefix, bot_server, date_options } from '../storage/config.json';
 import { createRequire } from 'module';
@@ -38,16 +37,19 @@ export const run = (async (client, message, args) => {
   if (verified_account) {
     console.log(`${message.author.username} attempted to verify as ${verified_account}, but already verified.`);
     add_roles();
-    message.reply(`you are already verified as ${verified_account}.`);
+    message.reply(`You are already verified as ${verified_account}.`);
   } else {
     if (player.length < 3) return invalid_account();
 
     const url = pb2_api + player + api_key_string;
 
     // not already in database
-    got(url).then(response => {
-      if (!response || response.statusCode != 200) return console.log('Invalid status/status code.');
-      const account = JSON.parse(response.body);
+    fetch(url).then(response => {
+      if (!response || response.status != 200) return console.log(`Invalid status/status code: ${response.status} ${response.statusText}`);
+      return response.json();
+    }).then(response => {
+
+      const account = response; // JSON.parse(response.body);
       const discord_field = account.icq;
 
       if (account.Error) {
@@ -78,7 +80,7 @@ export const run = (async (client, message, args) => {
           });
         }
 
-        message.reply(`you\'ve been successfully verified as \`${account.login}\`!`);
+        message.reply(`You\'ve been successfully verified as \`${account.login}\`!`);
       }
     }).catch(err => console.log(err));
   }

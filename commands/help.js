@@ -48,7 +48,7 @@ export const run = ((client, message, args) => {
   } else {
     // help command alone
     const command_access = { user: [], permission: [], owner: [] };
-    const role_color = (message.guild && !!message.guild.me.displayColor) ? message.guild.me.displayColor : 12172222;
+    const role_color = (message.guild && !!message.guild.members.me.displayColor) ? message.guild.members.me.displayColor : 12172222;
 
     const help_menu = new MessageEmbed()
         .setAuthor(`${client.user.username} Bot Help Menu`) // change this in discord.js@13.5

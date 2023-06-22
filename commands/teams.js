@@ -13,7 +13,7 @@ export const run = (async (client, message, args) => {
   const pl_name = pl_server.name;
   const pl_icon = pl_server.iconURL;
 
-  const role_color = !message.guild.me.displayColor ? 12172222 : message.guild.me.displayColor;
+  const role_color = !message.guild.members.me.displayColor ? 12172222 : message.guild.members.me.displayColor;
   
   // where the magic happens
   const inv = (await client.database.collection('pl_invite').findOne({})).data;

@@ -21,7 +21,7 @@ export const setRoles = (async (client, user, name, registration) => {
 
   if (!pl_guild) return console.log('I am not in Plazma League server for some reason...');
 
-  const client_in_PL = pl_guild.me;
+  const client_in_PL = pl_guild.members.me;
   const registered_ID = config.pl_server.roles.registeredID;
   const verified_ID = config.pl_server.roles.verifiedID;
   const spectators_ID = config.pl_server.roles.spectatorsID;
