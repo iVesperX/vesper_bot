@@ -15,7 +15,7 @@ const equals = ((value1, value2) => value1.toLowerCase() == value2.toLowerCase()
 
 export const run = (async (client, message, args) => {
   const player = args.join(' ');
-  const discord_tag = message.author.tag;
+  const discord_tag = message.author.username;
   const format =  `\`${config.prefix}verify [pb2_login]\``;
 
   if (!args.length) {
@@ -36,7 +36,7 @@ export const run = (async (client, message, args) => {
     : null;
   
   if (verified_account) {
-    console.log(`${message.author.tag} attempted to verify as ${verified_account}, but already verified.`);
+    console.log(`${message.author.username} attempted to verify as ${verified_account}, but already verified.`);
     add_roles();
     message.reply(`you are already verified as ${verified_account}.`);
   } else {
@@ -71,7 +71,7 @@ export const run = (async (client, message, args) => {
         if (config.bot_server) {
           const today = new Date();
           const formatted_date = today.toLocaleString('en-US', config.date_options) + ', ' + today.toLocaleTimeString();
-          const ver_message = `${message.author.tag} (<@${message.author.id}>) has verified as \`${account.login}\` (on ${formatted_date})`;
+          const ver_message = `${message.author.username} (<@${message.author.id}>) has verified as \`${account.login}\` (on ${formatted_date})`;
 
           client.channels.fetch(config.bot_server.mod.pl_verification).then(channel => {
             channel.send(ver_message);

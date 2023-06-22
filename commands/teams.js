@@ -52,7 +52,7 @@ export const run = (async (client, message, args) => {
          .setColor(role_color)
          .setDescription('List of all active teams within PL.')
          .setThumbnail(pl_icon)
-         .setFooter(client.user.tag, client.user.avatarURL);
+         .setFooter(client.user.username, client.user.avatarURL);
 
     for (let i = 1; i < teams.length; i++) {
       let player_list = teams[i].players.length > 1 ? teams[i].players.slice(1).join(', ') : 'N/A';

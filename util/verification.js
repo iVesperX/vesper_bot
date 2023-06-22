@@ -26,7 +26,7 @@ export const setRoles = (async (client, user, name, registration) => {
   const verified_ID = config.pl_server.roles.verifiedID;
   const spectators_ID = config.pl_server.roles.spectatorsID;
   
-  const discord_tag = user.tag;
+  const discord_tag = user.username;
 
   pl_guild.members.fetch(user.id).then(member => {
     // fetches user
@@ -66,6 +66,6 @@ export const setRoles = (async (client, user, name, registration) => {
     });
 
   }).catch(err => {
-    console.log(`Error fetching user: ${user.tag} (${user.id})`);
+    console.log(`Error fetching user: ${user.username} (${user.id})`);
   });
 });

@@ -13,7 +13,7 @@ const clone = (o => JSON.parse(JSON.stringify(o)));
 
 export const run = (async (client, message, args) => {
   const account = args.join(' ');
-  const discord_tag = message.author.tag;
+  const discord_tag = message.author.username;
   const format =  `\`${config.prefix}register {account_name}\``;
   
   const pl_server_member = client.guilds.fetch('310995545588105217').members.fetch(message.author.id);
@@ -42,12 +42,12 @@ export const run = (async (client, message, args) => {
 
   if (players[registered_account_index]) {
     // already in database
-    console.log(`${message.author.tag} attempted to register as ${account}, but already registered as ${players[registered_account_index].name}.`);
+    console.log(`${message.author.username} attempted to register as ${account}, but already registered as ${players[registered_account_index].name}.`);
     return message.reply(`you are already registered as ${players[registered_account_index].name}! You may not register as another account.`);
   }
 
   if (players[other_registered_account_index] && !equals(config.db_placeholder, account)) {
-    console.log(`${message.author.tag} attempted to register as ${players[other_registered_account_index].name}'s account.`);
+    console.log(`${message.author.username} attempted to register as ${players[other_registered_account_index].name}'s account.`);
     return message.channel.send(`Another user is already registered as \`${players[other_registered_account_index].name}\`. You may not register as that account.`);
   }
 
@@ -78,7 +78,7 @@ export const run = (async (client, message, args) => {
         if (config.bot_server) {
           const today = new Date();
           const formatted_date = today.toLocaleString('en-US', config.date_options) + ', ' + today.toLocaleTimeString();
-          const reg_message = `${message.author.tag} (<@${message.author.id}>) has registered as \`${account}\` (on ${formatted_date})`;
+          const reg_message = `${message.author.username} (<@${message.author.id}>) has registered as \`${account}\` (on ${formatted_date})`;
 
           client.channels.fetch(config.bot_server.mod.pl_registration).then(channel => {
             channel.send(reg_message);

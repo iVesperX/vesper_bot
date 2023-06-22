@@ -34,7 +34,7 @@ export const run = (async (client) => {
 
   let games = [
     { value: `in only ${client.guilds.cache.size} guilds...`, type: 'PLAYING', help: false },
-    { value: `with ${owner.tag}`, type: 'PLAYING', help: true },
+    { value: `with ${owner.username}`, type: 'PLAYING', help: true },
     { value: `24/7 ❤`, type: 'PLAYING', help: true },
 
     { value: `${total_users} users`, type: 'WATCHING', help: true },

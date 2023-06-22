@@ -59,7 +59,7 @@ export const run = (async (client, message, args) => {
          .setColor(role_color)
          .setDescription('List of all players within PL.')
          .setThumbnail(pl_icon)
-         .setFooter(client.user.tag, client.user.avatarURL);
+         .setFooter(client.user.username, client.user.avatarURL);
 
     for (let c = 0; c < collections.length; c++) {
       // 0 : players
