@@ -55,7 +55,7 @@ export const run = ((client, message, args) => {
         .setDescription(`For information on a specific command, use ${config.prefix}help \`[command]\`.`)
         .setColor(role_color)
         .setThumbnail(client.user.avatarURL)
-        .setFooter({ text: client.user.username, iconURL: client.user.avatarURL })
+        .setFooter(client.user.username, client.user.avatarURL) // change this in discord.js@13.5
         .setTimestamp(new Date());
 
     for (let i in config.commands) {
