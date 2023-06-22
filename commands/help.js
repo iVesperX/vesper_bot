@@ -51,7 +51,7 @@ export const run = ((client, message, args) => {
     const role_color = (message.guild && !!message.guild.me.displayColor) ? message.guild.me.displayColor : 12172222;
 
     const help_menu = new MessageEmbed()
-        .setAuthor({ name: `${client.user.username} Bot Help Menu` })
+        .setAuthor(`${client.user.username} Bot Help Menu`) // change this in discord.js@13.5
         .setDescription(`For information on a specific command, use ${config.prefix}help \`[command]\`.`)
         .setColor(role_color)
         .setThumbnail(client.user.avatarURL)
