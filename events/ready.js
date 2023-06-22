@@ -18,7 +18,7 @@ export const run = (async (client) => {
 
     if (config.bot_server) {
       client.channels.fetch(config.bot_server.mod.login).then(channel => {
-        channel.send(`Successfully deployed${account} on ${formatted_date} (UTC)`);
+        channel.send(`Successfully deployed${''} on ${formatted_date} (UTC)`);
       });
     }
   }
