@@ -14,7 +14,7 @@ export const run = (async (client) => {
   if (client.deployed) {
     const today = new Date();
     const formatted_date = today.toLocaleString('en-US', config.date_options) + ', ' + today.toLocaleTimeString();
-    const account = process.env.account ? ` by \`${process.env.account}@outlook.com\`` : '';
+    // const account = process.env.account ? ` by \`${process.env.account}@outlook.com\`` : '';
 
     if (config.bot_server) {
       client.channels.fetch(config.bot_server.mod.login).then(channel => {
