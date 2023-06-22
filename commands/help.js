@@ -1,4 +1,4 @@
-import { RichEmbed } from 'discord.js';
+import { MessageEmbed } from 'discord.js';
 // import { commands, prefix } from '../storage/config.json';
 import { createRequire } from 'module';
 
@@ -50,7 +50,7 @@ export const run = ((client, message, args) => {
     const command_access = { user: [], permission: [], owner: [] };
     const role_color = (message.guild && !!message.guild.me.displayColor) ? message.guild.me.displayColor : 12172222;
 
-    const help_menu = new RichEmbed();
+    const help_menu = new MessageEmbed();
 
     help_menu.setAuthor(`${client.user.username} Bot Help Menu`)
             .setDescription(`For information on a specific command, use ${config.prefix}help \`[command]\`.`)

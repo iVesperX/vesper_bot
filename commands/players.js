@@ -1,4 +1,4 @@
-import { RichEmbed } from 'discord.js';
+import { MessageEmbed } from 'discord.js';
 import { initialize } from '../util/init.js';
 // import { accessIDs } from '../storage/config.json';
 import { createRequire } from 'module';
@@ -52,7 +52,7 @@ export const run = (async (client, message, args) => {
     });
   } else {
     if (!pl_server) return;
-    const players_list = new RichEmbed();
+    const players_list = new MessageEmbed();
     const collections = [players, users];
     
     players_list.setAuthor(pl_name, pl_icon, inv)
