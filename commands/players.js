@@ -1,4 +1,4 @@
-import { MessageEmbed } from 'discord.js';
+import { EmbedBuilder } from 'discord.js';
 import { initialize } from '../util/init.js';
 // import { accessIDs } from '../storage/config.json';
 import { createRequire } from 'module';
@@ -52,14 +52,13 @@ export const run = (async (client, message, args) => {
     });
   } else {
     if (!pl_server) return;
-    const players_list = new MessageEmbed();
     const collections = [players, users];
-    
-    players_list.setAuthor(pl_name, pl_icon, inv)
-         .setColor(role_color)
-         .setDescription('List of all players within PL.')
-         .setThumbnail(pl_icon)
-         .setFooter(client.user.username, client.user.avatarURL);
+    const players_list = new EmbedBuilder()
+        .setAuthor(pl_name, pl_icon, inv)
+        .setColor(role_color)
+        .setDescription('List of all players within PL.')
+        .setThumbnail(pl_icon)
+        .setFooter(client.user.username, client.user.avatarURL);
 
     for (let c = 0; c < collections.length; c++) {
       // 0 : players
@@ -87,6 +86,6 @@ export const run = (async (client, message, args) => {
       players_list.addField(`**${role_mention}**`, full_list);
     }
 
-    message.channel.send(players_list);
+    message.channel.send({ embeds: [players_list] });
   }
 });

@@ -1,4 +1,4 @@
-import { MessageEmbed } from 'discord.js';
+import { EmbedBuilder } from 'discord.js';
 import { initialize } from '../util/init.js';
 // import { accessIDs } from '../storage/config.json';
 import { createRequire } from 'module';
@@ -46,19 +46,18 @@ export const run = (async (client, message, args) => {
     });
   } else {
     if (!pl_server) return;
-    const team_list = new MessageEmbed();
-    
-    team_list.setAuthor(pl_name, pl_icon, inv)
-         .setColor(role_color)
-         .setDescription('List of all active teams within PL.')
-         .setThumbnail(pl_icon)
-         .setFooter(client.user.username, client.user.avatarURL);
+    const team_list = new EmbedBuilder()
+        .setAuthor(pl_name, pl_icon, inv)
+        .setColor(role_color)
+        .setDescription('List of all active teams within PL.')
+        .setThumbnail(pl_icon)
+        .setFooter(client.user.username, client.user.avatarURL);
 
     for (let i = 1; i < teams.length; i++) {
       let player_list = teams[i].players.length > 1 ? teams[i].players.slice(1).join(', ') : 'N/A';
       team_list.addField(`__${teams[i].name}__`, `Manager: <@${teams[i].manager_id}>\nPlayers: ${player_list}`);
     }
 
-    message.channel.send(team_list);
+    message.channel.send({ embeds: [team_list] });
   }
 });
