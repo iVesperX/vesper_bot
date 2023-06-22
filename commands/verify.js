@@ -8,7 +8,7 @@ const config = pseudoRequire('../storage/config.json');
 
 const api_key = process.env.pb2_api_key || pseudoRequire('../storage/passwords.json').pb2_api_key;
 
-const pb2_api = 'http://plazmaburst2.com/extract.php?login=',
+const pb2_api = 'https://plazmaburst2.com/extract.php?login=',
       api_key_string = '&api_key=' + api_key;
 
 const equals = ((value1, value2) => value1.toLowerCase() == value2.toLowerCase());
