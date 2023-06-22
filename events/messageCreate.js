@@ -10,6 +10,8 @@ import {
 */
 import { createRequire } from 'module';
 
+const enabled_cmds = [ 'ping', 'verify', 'register' ];
+
 const pseudoRequire = createRequire(import.meta.url);
 const config = pseudoRequire('../storage/config.json');
 
@@ -31,6 +33,11 @@ export const run = (async (client, message) => {
 
     if (command_info.access == 1 && config.ownerID != message.author.id || command_info.access == 2 && !config.accessIDs.includes(message.author.id)) {
       return message.channel.send(`The \`${command.toLowerCase()}\` command is only allowed at the **${m} Level**.`);
+    }
+
+    if (enabled_cmds.indexOf(command.toLowerCase()) < 0 && config.ownerID != message.author.id) {
+      console.log(`${message.author.username} attempted to use ${command}, will fix later`);
+      return;
     }
   }
 
