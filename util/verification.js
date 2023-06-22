@@ -38,12 +38,10 @@ export const setRoles = (async (client, user, name, registration) => {
     
     if (!pl_server_member) return console.log(discord_tag + ' isn\'t in PL server!');
     if (!client_in_PL.hasPermission(["MANAGE_NICKNAMES", "MANAGE_ROLES"])) return console.log('Insufficient permissions in Plazma League Server.');
-  
-    if (!pl_server_member) return console.log(`${discord_tag} registered, but not in Plazma League server.`);
-  
+    
     // performs actions
     pl_server_member.addRole(role_to_add).catch(err => {
-      const actual_role = pl_guild.roles.get(role_to_add);
+      const actual_role = pl_guild.roles.fetch(role_to_add);
       console.log(`Unable to add "${actual_role && actual_role.name}" role to ${discord_tag}`);
     });
 
@@ -61,7 +59,7 @@ export const setRoles = (async (client, user, name, registration) => {
     if (registration) return; // returns if registering
   
     pl_server_member.removeRole(role_to_remove).catch(err => {
-      const actual_role = pl_guild.roles.get(role_to_remove);
+      const actual_role = pl_guild.roles.fetch(role_to_remove);
       console.log(`Unable to remove "${actual_role && actual_role.name}" role from ${discord_tag}`)
     });
 
