@@ -1,4 +1,4 @@
-import { EmbedBuilder } from 'discord.js';
+import { MessageEmbed } from 'discord.js';
 // import { commands, prefix } from '../storage/config.json';
 import { createRequire } from 'module';
 
@@ -50,12 +50,12 @@ export const run = ((client, message, args) => {
     const command_access = { user: [], permission: [], owner: [] };
     const role_color = (message.guild && !!message.guild.me.displayColor) ? message.guild.me.displayColor : 12172222;
 
-    const help_menu = new EmbedBuilder()
-        .setAuthor(`${client.user.username} Bot Help Menu`)
+    const help_menu = new MessageEmbed()
+        .setAuthor({ name: `${client.user.username} Bot Help Menu` })
         .setDescription(`For information on a specific command, use ${config.prefix}help \`[command]\`.`)
         .setColor(role_color)
         .setThumbnail(client.user.avatarURL)
-        .setFooter(client.user.username, client.user.avatarURL)
+        .setFooter({ text: client.user.username, iconURL: client.user.avatarURL })
         .setTimestamp(new Date());
 
     for (let i in config.commands) {
