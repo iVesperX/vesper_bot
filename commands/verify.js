@@ -1,5 +1,6 @@
 import { verify } from '../util/verification.js';
 // import { prefix, bot_server, date_options } from '../storage/config.json';
+import fetch from 'node-fetch';
 import { createRequire } from 'module';
 
 const pseudoRequire = createRequire(import.meta.url);
