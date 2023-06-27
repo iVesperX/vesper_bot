@@ -1,15 +1,15 @@
 import { initialize } from '../util/init.js';
 // import { ownerID, date_options, prefix, name as _name } from '../storage/config.json';
-import { createRequire } from 'module';
-
-const pseudoRequire = createRequire(import.meta.url);
-const config = pseudoRequire('../storage/config.json');
+import registerCommands from '../util/commands.js';
+import config from '../storage/config.json' assert { type: 'json' };
 
 const maintenance = false;
 const precedent = maintenance ? '⛔ ' : '';
 
 export const run = (async (client) => {
   console.log('Vesper locked and loaded.');
+
+  registerCommands(client);
 
   if (client.deployed) {
     const today = new Date();

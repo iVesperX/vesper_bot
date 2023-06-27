@@ -1,6 +1,5 @@
 // import { pl_server } from '../storage/config.json';
 import { createRequire } from 'module';
-import { Permissions } from 'discord.js';
 
 const pseudoRequire = createRequire(import.meta.url);
 const config = pseudoRequire('../storage/config.json');
@@ -27,12 +26,13 @@ const collections = {
 export const initialize = {
   invite: (async (client) => {
     const servID = config.pl_server.serverID;
-    const serv = await client.guilds.fetch(servID);
     const invite = (await client.database.collection('pl_invite').findOne({})).data;
   
     let validInvite;
+    let serv;
     
     try { validInvite = await client.fetchInvite(invite) } catch (err) {}
+    try { serv = await client.guilds.fetch(servID) } catch (err) {}
     
     if (serv && !validInvite) {
       const verificationChannel = await serv.channels.fetch(config.pl_server.verification);
@@ -58,6 +58,8 @@ export const initialize = {
       }).catch(err => {
         console.log(`Failed to generate invitation link for #${verificationChannel.name}.\n${err}`);
       });
+    } else if (!serv) {
+      console.log(`${client.user.username} is not in PL server. Unable to generate valid invite link.`)
     } else {
       console.log(`${validInvite.url} is a valid invitation link.`);
     }

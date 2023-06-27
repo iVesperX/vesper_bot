@@ -21,7 +21,7 @@ export const run = (async (client, message) => {
   const c = message.content;
   const args = c.split(' ');
   const command = args.shift().slice(prefix.length);
-  const command_path = `../commands/${command}.js`;
+  const command_path = `../old_commands/${command}.js`;
   const maintenance = /⛔/i.test(client.user.username);
   
   if (c.indexOf(prefix) !== 0 || !command || message.author.bot) return;

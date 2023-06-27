@@ -1,44 +1,38 @@
-import { success, failure } from '../util/reactor.js';
-// import { ownerID } from '../storage/config.json';
-import { createRequire } from 'module';
+import { SlashCommandBuilder, codeBlock } from 'discord.js';
+import config from '../storage/config.json' assert { type: 'json' };
 
-const pseudoRequire = createRequire(import.meta.url);
-const config = pseudoRequire('../storage/config.json');
+export const commandBuilder = {
+  data: new SlashCommandBuilder()
+    .setName('eval')
+    .setDescription('Evaluates a script for the bot to execute.')
+    .addStringOption(option =>
+      option
+        .setName('expression')
+        .setDescription('JavaScript to execute.')
+        .setRequired(true))
+    .addBooleanOption(option =>
+      option
+        .setName('send')
+        .setDescription('If the bot should send the output of the evaluation to the current channel.')),
 
-const code = '```';
+    async execute(interaction) {
+      if (interaction.user.id != config.ownerID) {
+        return interaction.reply('This command is only available for the bot owner.');
+      }
 
-export const run = ((client, message, args) => {
-  if (message.author.id != config.ownerID) return;
+      const expression = interaction.options.getString('expression');
+      const send_param = interaction.options.getBoolean('send');
 
-  const send_param = (args[0] == '-s');
-  const task = send_param ? args.slice(1).join(' ') : args.join(' ');
-  // console.log(task);
+      try {
+        const client = interaction.client;
+        const evaluation = eval(expression) || 'undefined';
 
-  if (send_param) {
-    try {
-      const r = eval(task);
-
-      message.channel.send(code + 'js\n' + (r ? r : 'undefined') + code).then(() => {
-        success(message, 'Message string evaluated successfully.');
-      }).catch(err => {
-        console.log(err);
-      });
-    } catch(err) {
-      failure(message, 'Error thrown trying to evaluate your message.');
-
-      console.log(err);
+        if (send_param) {
+          interaction.reply(codeBlock('js', evaluation)).catch(err => console.log);
+        }
+      } catch(e) {
+        interaction.channel.send('Error thrown trying to evaluate your message.').catch(err => console.log);
+        console.log(e);
+      }
     }
-    
-  } else {
-
-    try {
-      eval(task);
-      success(message, 'Message string evaluated successfully.')
-    } catch (err) {
-      failure(message, 'Error thrown trying to evaluate your message.');
-
-      console.log(err);
-    }
-
-  }
-});
+}
