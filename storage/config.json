@@ -100,28 +100,28 @@
 
 
     "register": {
-        "access": 0,
+        "access": 1,
         "desc": "Registers a PB2 account to sign up for Plazma League. Only accounts verified may be used when signing up.\n\n**Once done, a user may not register as a different account.**",
         "usage": "register {account_name}",
         "flags": []
       },
 
     "sign": {
-        "access": 0,
+        "access": 1,
         "desc": "Signs a registered player to the team owned by the command user.",
         "usage": "sign {player_name}",
         "flags": []
       },
 
     "waive": {
-        "access": 0,
+        "access": 1,
         "desc": "Waives a player from the team owned by the command user.",
         "usage": "waive {player_name}",
         "flags": []
       },
 
     "players": {
-        "access": 0,
+        "access": 1,
         "desc": "Displays all players registered in Plazma League.",
         "usage": "players -r",
         "flags": [
@@ -130,7 +130,7 @@
       },
 
     "teams": {
-        "access": 0,
+        "access": 1,
         "desc": "Displays all teams registered in Plazma League.",
         "usage": "teams|teams -r",
         "flags": [
