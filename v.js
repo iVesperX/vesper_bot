@@ -17,7 +17,16 @@ try {
 
 
 if (storage) {
-  const client = new Client({ intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES]});
+  const client = new Client({ intents: [
+    Intents.FLAGS.GUILDS,
+    Intents.FLAGS.GUILD_MESSAGES,
+    Intents.FLAGS.GUILD_MESSAGE_TYPING,
+    Intents.FLAGS.GUILD_MEMBERS,
+    Intents.FLAGS.GUILD_MODERATION,
+    Intents.FLAGS.GUILD_PRESENCES,
+    Intents.FLAGS.GUILD_INVITES,
+    Intents.FLAGS.DIRECT_MESSAGES
+  ] });
   console.log(`Discord Version: ${Constants.Package.version}`);
 
   const mongo_login = storage.pl_login;
